@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/OrderDetails")
+@RequestMapping()
 public class OrderDetailsResources {
 
     private final OrderDetailsServices orderDetailsServices;
@@ -17,8 +17,9 @@ public class OrderDetailsResources {
     public OrderDetailsResources(OrderDetailsServices orderDetailsServices){
         this.orderDetailsServices=orderDetailsServices;
     }
+    @CrossOrigin(origins = "http://localhost:4200")
 
-    @GetMapping("/allOrderDetails")
+    @GetMapping("/orderDetails")
     public ResponseEntity<List<OrderDetails>> getAllOrderDetails(){
         List<OrderDetails> orderDetails = orderDetailsServices.findAllOrderDetails();
         return new ResponseEntity<>(orderDetails, HttpStatus.OK);

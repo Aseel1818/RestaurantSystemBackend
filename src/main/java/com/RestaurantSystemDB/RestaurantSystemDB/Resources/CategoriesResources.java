@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Category")
+@RequestMapping()
 public class CategoriesResources {
     private final CategoryServices categoryServices;
 
@@ -16,7 +16,7 @@ public class CategoriesResources {
         this.categoryServices=categoryServices;
     }
 
-    @GetMapping("/allCategories")
+    @GetMapping("/Categories")
     public ResponseEntity<List<Categories>> getAllCategories(){
         List<Categories> categories = categoryServices.findAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);

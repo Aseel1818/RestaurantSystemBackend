@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Orders")
+@RequestMapping()
 public class OrdersResources
 {
     private final OrdersServices ordersServices;
@@ -17,7 +17,7 @@ public class OrdersResources
         this.ordersServices=ordersServices;
     }
 
-    @GetMapping("/allOrders")
+    @GetMapping("/orders")
     public ResponseEntity<List<Orders>> getAllOrders(){
         List<Orders> orders = ordersServices.findAllOrders();
         return new ResponseEntity<>(orders, HttpStatus.OK);

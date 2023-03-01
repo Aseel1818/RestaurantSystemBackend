@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Item")
+@RequestMapping()
 public class ItemResources {
 
     private final ItemsServices itemsServices;
@@ -16,8 +16,8 @@ public class ItemResources {
     public ItemResources(ItemsServices itemsServices){
         this.itemsServices=itemsServices;
     }
-
-    @GetMapping("/allItems")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/items")
     public ResponseEntity<List<Items>> getAllItems(){
         List<Items> items = itemsServices.findAllItems();
         return new ResponseEntity<>(items, HttpStatus.OK);
@@ -28,8 +28,6 @@ public class ItemResources {
         Items item = itemsServices.findItemById(id);
         return new ResponseEntity<>(item,HttpStatus.OK);
     }
-
-
 
     @PostMapping("/addItem")
 
