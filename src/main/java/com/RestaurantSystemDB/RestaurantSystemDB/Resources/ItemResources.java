@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping()
 public class ItemResources {
@@ -16,7 +16,6 @@ public class ItemResources {
     public ItemResources(ItemsServices itemsServices){
         this.itemsServices=itemsServices;
     }
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/items")
     public ResponseEntity<List<Items>> getAllItems(){
         List<Items> items = itemsServices.findAllItems();

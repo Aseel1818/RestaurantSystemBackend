@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+@CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
 @RequestMapping()
@@ -17,7 +18,6 @@ public class TablesResources {
     public TablesResources(TablesServices tablesServices){
         this.tablesServices=tablesServices;
     }
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/tables")
     public ResponseEntity<List<Tables>> getAllTables(){
         List<Tables> tables = tablesServices.findAllTables();

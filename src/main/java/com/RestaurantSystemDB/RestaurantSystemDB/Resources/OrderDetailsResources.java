@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping()
 public class OrderDetailsResources {
@@ -17,9 +18,7 @@ public class OrderDetailsResources {
     public OrderDetailsResources(OrderDetailsServices orderDetailsServices){
         this.orderDetailsServices=orderDetailsServices;
     }
-    @CrossOrigin(origins = "http://localhost:4200")
 
-    @GetMapping("/orderDetails")
     public ResponseEntity<List<OrderDetails>> getAllOrderDetails(){
         List<OrderDetails> orderDetails = orderDetailsServices.findAllOrderDetails();
         return new ResponseEntity<>(orderDetails, HttpStatus.OK);

@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
 @RestController
 @RequestMapping()
 public class OrdersResources
@@ -16,6 +15,7 @@ public class OrdersResources
     public OrdersResources(OrdersServices ordersServices){
         this.ordersServices=ordersServices;
     }
+    @CrossOrigin(origins = "http://localhost:4200")
 
     @GetMapping("/orders")
     public ResponseEntity<List<Orders>> getAllOrders(){
