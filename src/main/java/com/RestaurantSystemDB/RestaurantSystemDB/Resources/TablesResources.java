@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Tables")
+@RequestMapping()
 public class TablesResources {
 
     private final TablesServices tablesServices;
@@ -17,8 +17,8 @@ public class TablesResources {
     public TablesResources(TablesServices tablesServices){
         this.tablesServices=tablesServices;
     }
-
-    @GetMapping("/allTables")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/tables")
     public ResponseEntity<List<Tables>> getAllTables(){
         List<Tables> tables = tablesServices.findAllTables();
         return new ResponseEntity<>(tables, HttpStatus.OK);
