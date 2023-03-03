@@ -12,24 +12,23 @@ public class Categories implements Serializable {
     private Long id ;
     private String categoryName;
 
-    private String categoryImageURL;
-
-
     @OneToMany(mappedBy = "category")
-    private List<Items> item;
+    private List<Items> items;
 
+    public List<Items> getItems() {
+        return items;
+    }
 
+    public void setItems(List<Items> items) {
+        this.items = items;
+    }
 
     public Categories() {}
 
-
-    public Categories(String categoryName , String categoryImageURL  )
+    public Categories(String categoryName)
     {
         this.categoryName=categoryName;
         this.id=id;
-        this.categoryImageURL=categoryImageURL;
-
-
     }
 
     public long getCategoryID(){
@@ -38,28 +37,12 @@ public class Categories implements Serializable {
     public void setCategoryId(Long categoryId){
         this.id=categoryId;
     }
-
     public String getCategoryName (){
         return categoryName;
     }
     public void setCategoryName(String categoryName){
         this.categoryName=categoryName;
     }
-
-    public String getCategoryImageURL (){
-        return categoryImageURL;
-    }
-    public void setCategoryImageURL(String categoryImageURL){
-        this.categoryImageURL=categoryImageURL;
-    }
-
-
-
-
-
-
-
-
 
 }
 

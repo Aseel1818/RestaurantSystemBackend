@@ -1,5 +1,6 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Categories;
+import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.CategoryServices;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -8,17 +9,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping()
+@RequestMapping("/categories")
 public class CategoriesResources {
     private final CategoryServices categoryServices;
 
     public CategoriesResources(CategoryServices categoryServices){
         this.categoryServices=categoryServices;
     }
-    @GetMapping("/Categories")
+    @GetMapping
     public ResponseEntity<List<Categories>> getAllCategories(){
         List<Categories> categories = categoryServices.findAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<Items>> getItemsByCategoryId(@PathVariable("id") Long categoryId) {
+        List<Items> items = categoryServices.findItemsByCategoryId(categoryId);
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
     @GetMapping("/findCategory/{id}")
@@ -27,10 +34,7 @@ public class CategoriesResources {
         return new ResponseEntity<>(category,HttpStatus.OK);
     }
 
-
-
     @PostMapping("/addCategory")
-
     public ResponseEntity<Categories> addCategory(@RequestBody Categories category){
         Categories  newCategory = categoryServices.addCategory(category);
         return new ResponseEntity<>(newCategory,HttpStatus.CREATED);
@@ -44,13 +48,10 @@ public class CategoriesResources {
         return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }
 
-
     @DeleteMapping("/deleteCategory/{id}")
     @Transactional
     public ResponseEntity<?> deleteCategory (@PathVariable("id") Long id ){
         categoryServices.deleteCategory(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }
