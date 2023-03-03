@@ -18,9 +18,8 @@ public class ItemsServices {
 
     public Items addItem (Items item){
         return  itemsRepository.save(item);
-
     }
-
+    
 
     public Items updateItem(Items item) {
         Items existingItem = itemsRepository.findById(item.getItemID()).get();
@@ -42,7 +41,5 @@ public class ItemsServices {
 
     public Items findItemById(Long id ){
         return itemsRepository.findItemById(id).orElseThrow(()->new ItemNotFoundException("Item with this id "+id+"does not exist"));
-
-
     }
 }

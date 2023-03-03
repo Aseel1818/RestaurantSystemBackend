@@ -19,22 +19,16 @@ public class Orders implements Serializable {
             cascade = CascadeType.ALL)
     private Tables tables;
 
-
     @OneToMany(mappedBy = "orders")
     private List<OrderDetails> orderDetail;
 
-
-
     public Orders() {}
-
 
     public Orders(float total , String OrderNote )
     {
         this.total=total;
         this.OrderNote=OrderNote;
         this.id=id;
-
-
     }
 
     public long getOrderID(){
@@ -57,12 +51,4 @@ public class Orders implements Serializable {
     public void setOrderNote(String orderNote){
         this.OrderNote=orderNote;
     }
-
-
-
-
-
-
-
-
 }
