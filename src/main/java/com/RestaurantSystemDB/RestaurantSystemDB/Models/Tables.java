@@ -14,8 +14,8 @@ public class Tables implements Serializable
     private  boolean tableStatus;
     private String tableName;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "order_id", nullable = false)
+   @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "order_id", nullable = true)
     private Orders orders;
 
     public Tables() {}
