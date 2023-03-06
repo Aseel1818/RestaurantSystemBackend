@@ -1,5 +1,9 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Services;
+import com.RestaurantSystemDB.RestaurantSystemDB.Exceptions.CategoryNotFoundException;
 import com.RestaurantSystemDB.RestaurantSystemDB.Exceptions.OrderNotFoundException;
+import com.RestaurantSystemDB.RestaurantSystemDB.Models.Categories;
+import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
+import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,4 +47,10 @@ public class OrdersServices {
 
 
     }
+    public List<OrderDetails> findDetailsByOrdersID(Long orderID) {
+        Orders order = ordersRepository.findById(orderID)
+                .orElseThrow(() -> new OrderNotFoundException("DETAILS with this id " + orderID + " does not exist"));
+        return order.getDetails();
+    }
+
 }

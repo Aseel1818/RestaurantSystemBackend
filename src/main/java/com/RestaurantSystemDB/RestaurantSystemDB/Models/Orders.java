@@ -21,6 +21,9 @@ public class Orders implements Serializable {
 
     @OneToMany(mappedBy = "orders")
     private List<OrderDetails> orderDetail;
+    public List<OrderDetails> getDetails() {
+        return orderDetail;
+    }
 
     public Orders() {}
 
