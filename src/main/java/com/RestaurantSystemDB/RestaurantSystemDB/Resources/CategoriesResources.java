@@ -16,7 +16,7 @@ public class CategoriesResources {
     public CategoriesResources(CategoryServices categoryServices){
         this.categoryServices=categoryServices;
     }
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<List<Categories>> getAllCategories(){
         List<Categories> categories = categoryServices.findAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);

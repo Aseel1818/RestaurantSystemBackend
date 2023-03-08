@@ -1,4 +1,6 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
+import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
+import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.OrdersServices;
 import jakarta.transaction.Transactional;
@@ -53,6 +55,10 @@ public class OrdersResources
         ordersServices.deleteOrder(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    @GetMapping("/{id}/details")
+    public ResponseEntity<List<OrderDetails>> getDetailsByOrdersID(@PathVariable("id") Long orderID) {
+        List<OrderDetails> orders = ordersServices.findDetailsByOrdersID(orderID);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
 
 }

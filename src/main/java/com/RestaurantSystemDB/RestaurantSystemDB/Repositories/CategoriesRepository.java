@@ -5,8 +5,6 @@ import java.util.Optional;
 
 public interface CategoriesRepository  extends JpaRepository<Categories,Long>
 {
-
     void deleteCategoryById(Long id);
-
     Optional<Categories> findCategoryById(Long id);
 }
