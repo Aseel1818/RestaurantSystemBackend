@@ -1,47 +1,54 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Models;
+
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 
 @Entity
-public class Tables implements Serializable
-{
+public class Tables implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false,updatable = false)
+    @Column(nullable = false, updatable = false)
 
-    private Long id ;
-    private  boolean tableStatus;
-    private String tableName;
+    private Long id;
+    private boolean status;
+    private String name;
 
-   @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @OneToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "order_id", nullable = true)
     private Orders orders;
 
-    public Tables() {}
-
-    public Tables(boolean tableStatus , String tableName)
-    {
-        this.tableStatus=tableStatus;
-        this.tableName=tableName;
-        this.id=id;
+    public Tables() {
     }
 
-    public long getTableID(){
-        return  id;
-    }
-    public void setTableId(Long id){
-        this.id=id;
+    public Tables(boolean status, String name) {
+        this.status = status;
+        this.name = name;
+        this.id = id;
     }
 
-    public String getTableName(){
-        return  tableName;
+    public long getTableID() {
+        return id;
     }
-    public void setTableName(String tableName){
-        this.tableName=tableName;
+
+    public void setTableId(Long id) {
+        this.id = id;
     }
-    public boolean getTableStatus (){
-        return tableStatus;
+
+    public String getName() {
+        return name;
     }
-    public void setTableStatus(boolean tableStatus){this.tableStatus=tableStatus;}
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean getTableStatus() {
+        return status;
+    }
+
+    public void setTableStatus(boolean status) {
+        this.status = status;
+    }
 }

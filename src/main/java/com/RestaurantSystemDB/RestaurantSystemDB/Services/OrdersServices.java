@@ -27,7 +27,7 @@ public class OrdersServices {
 
     public Orders updateOrder(Orders order) {
         Orders existingOrder = ordersRepository.findById(order.getOrderID()).get();
-        existingOrder.setOrderNote(order.getOrderNote());
+        existingOrder.setNote(order.getNote());
         existingOrder.setTotal(order.getTotal());
         Orders updatedOrder = ordersRepository.save(existingOrder);
         return updatedOrder;

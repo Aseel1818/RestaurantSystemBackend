@@ -1,5 +1,7 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Models;
+
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,13 +9,21 @@ import java.util.List;
 public class Categories implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false,updatable = false)
+    @Column(nullable = false, updatable = false)
 
-    private Long id ;
-    private String categoryName;
+    private Long id;
+    private String name;
 
     @OneToMany(mappedBy = "category")
     private List<Items> items;
+
+    public Categories() {
+    }
+
+    public Categories(String name) {
+        this.name = name;
+        this.id = id;
+    }
 
     public List<Items> getItems() {
         return items;
@@ -23,25 +33,20 @@ public class Categories implements Serializable {
         this.items = items;
     }
 
-    public Categories() {}
-
-    public Categories(String categoryName)
-    {
-        this.categoryName=categoryName;
-        this.id=id;
+    public long getCategoryID() {
+        return id;
     }
 
-    public long getCategoryID(){
-        return  id;
+    public void setCategoryId(Long id) {
+        this.id = id;
     }
-    public void setCategoryId(Long categoryId){
-        this.id=categoryId;
+
+    public String getName() {
+        return name;
     }
-    public String getCategoryName (){
-        return categoryName;
-    }
-    public void setCategoryName(String categoryName){
-        this.categoryName=categoryName;
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
