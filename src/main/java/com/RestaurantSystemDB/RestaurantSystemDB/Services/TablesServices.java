@@ -26,7 +26,7 @@ public class TablesServices {
 
     public Tables updateTable(Tables table) {
         Tables existingTable = tablesRepository.findById(table.getTableID()).get();
-        existingTable.setTableStatus(table.getTableStatus());
+        existingTable.setStatus(table.getStatus());
         existingTable.setName(table.getName());
         Tables updatedTable = tablesRepository.save(existingTable);
         return updatedTable;

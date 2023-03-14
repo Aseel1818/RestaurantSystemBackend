@@ -44,11 +44,11 @@ public class Tables implements Serializable {
         this.name = name;
     }
 
-    public boolean getTableStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setTableStatus(boolean status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 }
