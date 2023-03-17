@@ -23,14 +23,11 @@ public class TablesServices {
 
     }
 
-
-    public Tables updateTable(Tables table) {
-        Tables existingTable = tablesRepository.findById(table.getTableID()).get();
-        existingTable.setStatus(table.getStatus());
-        existingTable.setName(table.getName());
-        Tables updatedTable = tablesRepository.save(existingTable);
-        return updatedTable;
+    public Tables updateTable(Tables updatedTable) {
+        updatedTable.setStatus(!updatedTable.getStatus());
+        return tablesRepository.save(updatedTable);
     }
+
 
     public void deleteTable(Long id) {
         tablesRepository.deleteTableById(id);
@@ -42,7 +39,5 @@ public class TablesServices {
 
     public Tables findTableById(Long id) {
         return tablesRepository.findTableById(id).orElseThrow(() -> new TableNotFoundException("Table with this id " + id + "does not exist"));
-
-
     }
 }

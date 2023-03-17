@@ -28,11 +28,19 @@ public class Tables implements Serializable {
         this.id = id;
     }
 
-    public long getTableID() {
+    public Orders getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
+    }
+
+    public long getID() {
         return id;
     }
 
-    public void setTableId(Long id) {
+    public void setID(Long id) {
         this.id = id;
     }
 
