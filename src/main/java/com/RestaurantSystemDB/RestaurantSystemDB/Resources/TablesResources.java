@@ -2,7 +2,6 @@ package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
 
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Tables;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.TablesServices;
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +48,6 @@ public class TablesResources {
 
 
     @DeleteMapping("/deleteTable/{id}")
-    @Transactional
     public ResponseEntity<?> deleteTable(@PathVariable("id") Long id) {
         tablesServices.deleteTable(id);
         return new ResponseEntity<>(HttpStatus.OK);
