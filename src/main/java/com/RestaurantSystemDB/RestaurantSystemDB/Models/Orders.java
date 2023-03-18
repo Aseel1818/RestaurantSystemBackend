@@ -37,11 +37,11 @@ public class Orders implements Serializable {
         return orderDetail;
     }
 
-    public long getOrderID() {
+    public long getId() {
         return id;
     }
 
-    public void setOrderId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

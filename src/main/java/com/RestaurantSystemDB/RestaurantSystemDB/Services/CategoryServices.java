@@ -47,7 +47,5 @@ public class CategoryServices {
 
     public Categories findCategoryById(Long id) {
         return categoriesRepository.findCategoryById(id).orElseThrow(() -> new CategoryNotFoundException("Category with this id " + id + "does not exist"));
-
-
     }
 }
