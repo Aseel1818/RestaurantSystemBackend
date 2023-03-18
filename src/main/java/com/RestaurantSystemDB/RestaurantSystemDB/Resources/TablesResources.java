@@ -52,5 +52,4 @@ public class TablesResources {
         tablesServices.deleteTable(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }
