@@ -40,8 +40,11 @@ public class TablesResources {
         return new ResponseEntity<>(newTable, HttpStatus.CREATED);
     }
 
+    
     @PutMapping("/updateTable/{id}")
     public ResponseEntity<Tables> updateTable(@PathVariable("id") Long id, @RequestBody Tables updatedTable) {
+        Boolean newStatus = !updatedTable.getStatus();
+        updatedTable.setStatus(newStatus);
         updatedTable = tablesServices.updateTable(updatedTable);
         return new ResponseEntity<>(updatedTable, HttpStatus.OK);
     }

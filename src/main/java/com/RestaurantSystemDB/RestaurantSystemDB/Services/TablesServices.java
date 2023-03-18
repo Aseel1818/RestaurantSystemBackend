@@ -24,10 +24,8 @@ public class TablesServices {
     }
 
     public Tables updateTable(Tables updatedTable) {
-        updatedTable.setStatus(!updatedTable.getStatus());
         return tablesRepository.save(updatedTable);
     }
-
 
     public void deleteTable(Long id) {
         tablesRepository.deleteTableById(id);
