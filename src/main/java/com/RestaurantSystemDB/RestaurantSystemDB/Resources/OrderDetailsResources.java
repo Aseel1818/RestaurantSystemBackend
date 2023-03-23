@@ -18,7 +18,7 @@ public class OrderDetailsResources {
     public OrderDetailsResources(OrderDetailsServices orderDetailsServices){
         this.orderDetailsServices=orderDetailsServices;
     }
-
+    @GetMapping("/OrderDetail")
     public ResponseEntity<List<OrderDetails>> getAllOrderDetails(){
         List<OrderDetails> orderDetails = orderDetailsServices.findAllOrderDetails();
         return new ResponseEntity<>(orderDetails, HttpStatus.OK);
@@ -43,7 +43,7 @@ public class OrderDetailsResources {
     public ResponseEntity<OrderDetails> updateOrderDetail(@PathVariable("id") Long id,
                                                        @RequestBody OrderDetails orderDetail){
 
-        //orderDetail.setOrderDetailId(id);
+        orderDetail.setId(id);
         OrderDetails updatedOrderDetail = orderDetailsServices.updateOrderDetail(orderDetail);
         return new ResponseEntity<>(updatedOrderDetail, HttpStatus.OK);
     }

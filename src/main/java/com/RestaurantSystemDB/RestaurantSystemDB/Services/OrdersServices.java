@@ -20,11 +20,8 @@ public class OrdersServices {
     }
 
     public Orders addOrder(Orders order) {
-        Orders newOrder = new Orders();
-        newOrder.setTotal(order.getTotal());
-        newOrder.setNote(order.getNote());
-        //newOrder.
-        return ordersRepository.save(newOrder);
+
+        return ordersRepository.save(order);
     }
 
 

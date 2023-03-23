@@ -3,6 +3,8 @@ package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
+import com.RestaurantSystemDB.RestaurantSystemDB.Models.Tables;
+import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.ItemsServices;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.OrdersServices;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.TablesServices;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -27,12 +30,14 @@ public class OrdersResources {
     private TablesServices tablesServices;
     @Autowired
     private ItemsServices itemsServices;
+    @Autowired
+    private OrdersRepository ordersRepository;
+
 
     public OrdersResources(OrdersServices ordersServices) {
         this.ordersServices = ordersServices;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
 
     @GetMapping("/orders")
     public ResponseEntity<List<Orders>> getAllOrders() {
@@ -48,26 +53,29 @@ public class OrdersResources {
 
 
     @PostMapping("/addOrder")
-
     public ResponseEntity<Orders> addOrder(@RequestBody OrderPayload order) {
         ArrayList<OrderDetails> orderDetails = new ArrayList<>();
-        for (OrderDetailsPayload orderDetailPayload :
-                order.getOrderDetail()) {
-            orderDetails.add(
-                    OrderDetails.builder()
-                            .item(itemsServices.findItemById(orderDetailPayload.getItemId()))
-                            .quantity(orderDetailPayload.getQuantity())
-                            .build()
-            );
+        for (OrderDetailsPayload orderDetailPayload : order.getOrderDetail()) {
+            orderDetails.add(OrderDetails.builder()
+                    .item(itemsServices.findItemById(orderDetailPayload.getItemId()))
+                    .quantity(orderDetailPayload.getQuantity())
+                    .build());
         }
+
         Orders newOrder = Orders.builder()
-                .tables(order.getTables() != null ? tablesServices.findTableById(order.getTables()) : null)
+                .id(order.getId())
+                .tables(order.getTables() != null ? tablesServices.findTableById(order.getTables()).getID() : null)
                 .total(order.getTotal())
                 .note(order.getNote())
                 .orderDetail(orderDetails)
                 .build();
+
+        Orders savedOrder = ordersServices.addOrder(newOrder); // save the new order to the database
+
         return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
     }
+
+
 
     @PutMapping("/updateOrder/{id}")
     public ResponseEntity<Orders> updateOrder(@PathVariable("id") Long id,

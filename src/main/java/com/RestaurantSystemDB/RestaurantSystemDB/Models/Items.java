@@ -19,7 +19,9 @@ public class Items implements Serializable {
     private String imageUrl;
 
     private float price;
-
+    @OneToOne(mappedBy = "item", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private OrderDetails orderDetails;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Categories category;

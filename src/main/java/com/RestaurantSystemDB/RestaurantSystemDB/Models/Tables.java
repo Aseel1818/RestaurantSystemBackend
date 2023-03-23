@@ -15,10 +15,6 @@ public class Tables implements Serializable {
     private boolean status;
     private String name;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "order_id", nullable = true)
-    private Orders orders;
-
     public Tables() {
     }
 
@@ -28,13 +24,6 @@ public class Tables implements Serializable {
         this.id = id;
     }
 
-    public Orders getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Orders orders) {
-        this.orders = orders;
-    }
 
     public long getID() {
         return id;

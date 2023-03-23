@@ -24,11 +24,9 @@ public class Orders implements Serializable {
 
     private Float total;
 
+    private Long tables;
 
-    @OneToOne(mappedBy = "orders", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private Tables tables;
 
-    @OneToMany
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<OrderDetails> orderDetail;
 }
