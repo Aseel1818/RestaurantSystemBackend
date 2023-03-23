@@ -23,9 +23,8 @@ public class OrderDetailsServices {
 
 
     public OrderDetails updateOrderDetail(OrderDetails orderDetail) {
-        OrderDetails existingOrderDetail = orderDetailsRepository.findById(orderDetail.getOrderDetailId()).get();
-        existingOrderDetail.setNoteForMenu(orderDetail.getNoteForMenu());
-        existingOrderDetail.setCurrency(orderDetail.getCurrency());
+        OrderDetails existingOrderDetail = orderDetailsRepository.findById(orderDetail.getId()).get();
+        existingOrderDetail.setNote(orderDetail.getNote());
         existingOrderDetail.setQuantity(orderDetail.getQuantity());
         OrderDetails updatedOrderDetail = orderDetailsRepository.save(existingOrderDetail);
         return updatedOrderDetail;

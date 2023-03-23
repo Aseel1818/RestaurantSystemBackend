@@ -25,10 +25,6 @@ public class Items implements Serializable {
     private Categories category;
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable
-    private Set<OrderDetails> orderDetails;
-
     public Items() {
     }
 

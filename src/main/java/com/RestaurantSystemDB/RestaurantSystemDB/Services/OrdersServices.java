@@ -20,8 +20,11 @@ public class OrdersServices {
     }
 
     public Orders addOrder(Orders order) {
-        return ordersRepository.save(order);
-
+        Orders newOrder = new Orders();
+        newOrder.setTotal(order.getTotal());
+        newOrder.setNote(order.getNote());
+        //newOrder.
+        return ordersRepository.save(newOrder);
     }
 
 
@@ -50,7 +53,7 @@ public class OrdersServices {
     public List<OrderDetails> findDetailsByOrdersID(Long orderID) {
         Orders order = ordersRepository.findById(orderID)
                 .orElseThrow(() -> new OrderNotFoundException("DETAILS with this id " + orderID + " does not exist"));
-        return order.getDetails();
+        return order.getOrderDetail();
     }
 
 }

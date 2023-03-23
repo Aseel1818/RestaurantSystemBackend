@@ -1,10 +1,17 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
-
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Orders implements Serializable {
     @Id
@@ -17,47 +24,11 @@ public class Orders implements Serializable {
 
     private Float total;
 
+
     @OneToOne(mappedBy = "orders", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Tables tables;
 
-    @OneToMany(mappedBy = "orders")
+    @OneToMany
     private List<OrderDetails> orderDetail;
-
-    public Orders() {
-    }
-
-    public Orders(float total, String note) {
-        this.total = total;
-        this.note = note;
-        this.id = id;
-    }
-
-    public List<OrderDetails> getDetails() {
-        return orderDetail;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Float getTotal() {
-        return total;
-    }
-
-    public void setTotal(Float total) {
-        this.total = total;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
 }

@@ -42,7 +42,8 @@ public class OrderDetailsResources {
     @PutMapping("/updateOrderDetail/{id}")
     public ResponseEntity<OrderDetails> updateOrderDetail(@PathVariable("id") Long id,
                                                        @RequestBody OrderDetails orderDetail){
-        orderDetail.setOrderDetailId(id);
+
+        //orderDetail.setOrderDetailId(id);
         OrderDetails updatedOrderDetail = orderDetailsServices.updateOrderDetail(orderDetail);
         return new ResponseEntity<>(updatedOrderDetail, HttpStatus.OK);
     }
