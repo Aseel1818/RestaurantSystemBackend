@@ -72,7 +72,7 @@ public class OrdersResources {
 
         Orders savedOrder = ordersServices.addOrder(newOrder); // save the new order to the database
 
-        return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
     }
 
 
