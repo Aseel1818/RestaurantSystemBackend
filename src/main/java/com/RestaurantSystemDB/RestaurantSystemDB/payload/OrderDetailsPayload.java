@@ -13,4 +13,6 @@ public class OrderDetailsPayload {
 
     private Long itemId;
 
+    private long orderId;
+
 }

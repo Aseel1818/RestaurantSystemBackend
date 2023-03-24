@@ -1,9 +1,7 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
 
-import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
-import com.RestaurantSystemDB.RestaurantSystemDB.Models.Tables;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.ItemsServices;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.OrdersServices;
@@ -15,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -54,12 +50,14 @@ public class OrdersResources {
 
     @PostMapping("/addOrder")
     public ResponseEntity<Orders> addOrder(@RequestBody OrderPayload order) {
-        ArrayList<OrderDetails> orderDetails = new ArrayList<>();
+        List<OrderDetails> orderDetails = new ArrayList<>();
         for (OrderDetailsPayload orderDetailPayload : order.getOrderDetail()) {
-            orderDetails.add(OrderDetails.builder()
+            OrderDetails orderDetail = OrderDetails.builder()
                     .item(itemsServices.findItemById(orderDetailPayload.getItemId()))
                     .quantity(orderDetailPayload.getQuantity())
-                    .build());
+                    .order(null) 
+                    .build();
+            orderDetails.add(orderDetail);
         }
 
         Orders newOrder = Orders.builder()
@@ -69,9 +67,11 @@ public class OrdersResources {
                 .note(order.getNote())
                 .orderDetail(orderDetails)
                 .build();
+        for (OrderDetails orderDetail : orderDetails) {
+            orderDetail.setOrder(newOrder);
+        }
 
-        Orders savedOrder = ordersServices.addOrder(newOrder); // save the new order to the database
-
+        Orders savedOrder = ordersServices.addOrder(newOrder);
         return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
     }
 

@@ -31,8 +31,8 @@ public class OrderDetails implements Serializable {
         @JoinColumn(name = "item_id")
         private Items item;
 
-        @ManyToOne(fetch = FetchType.EAGER)
-        @JoinColumn(name = "order_id")
+        @ManyToOne
+        @JoinColumn(name = "order_id", referencedColumnName = "id")
         private Orders order;
 
 }

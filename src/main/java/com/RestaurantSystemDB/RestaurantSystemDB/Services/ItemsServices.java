@@ -28,7 +28,6 @@ public class ItemsServices {
         existingItem.setName(item.getName());
         existingItem.setImageUrl(item.getImageUrl());
         existingItem.setPrice(item.getPrice());
-
         Items updatedItem = itemsRepository.save(existingItem);
         return updatedItem;
     }

@@ -20,7 +20,6 @@ public class TablesServices {
 
     public Tables addTable(Tables table) {
         return tablesRepository.save(table);
-
     }
 
     public Tables updateTable(Tables updatedTable) {
