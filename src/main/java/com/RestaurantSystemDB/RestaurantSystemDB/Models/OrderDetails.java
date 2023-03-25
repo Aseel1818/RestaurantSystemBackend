@@ -20,7 +20,7 @@ public class OrderDetails implements Serializable {
 
         private Long id ;
 
-        private int quantity;
+        private Integer quantity;
 
         @Nullable
         private String note;
@@ -30,9 +30,7 @@ public class OrderDetails implements Serializable {
         @JoinColumn(name = "item_id")
         private Items item;
 
-        @ManyToOne
-        @JoinColumn(name = "order_id", referencedColumnName = "id")
-        private Orders order;
+
 
 }
 

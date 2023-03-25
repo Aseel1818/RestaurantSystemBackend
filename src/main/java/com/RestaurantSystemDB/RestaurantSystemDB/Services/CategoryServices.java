@@ -4,6 +4,7 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Exceptions.CategoryNotFoundExce
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Categories;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.CategoriesRepository;
+import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.ItemsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +25,16 @@ public class CategoryServices {
 
     }
 
-    public List<Items> findItemsByCategoryId(Long id) {
-        Categories category = categoriesRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException("Category with this id " + id + " does not exist"));
-        return category.getItems();
-    }
+//    public List<Items> findItemsByCategoryId(Long id) {
+//        Categories category = categoriesRepository.findById(id)
+//                .orElseThrow(() -> new CategoryNotFoundException("Category with this id " + id + " does not exist"));
+//        return category.getItems();
+//    }
+
+
 
     public Categories updateCategory(Categories category) {
-        Categories existingCategory = categoriesRepository.findById(category.getCategoryID()).get();
+        Categories existingCategory = categoriesRepository.findById(category.getId()).get();
         existingCategory.setName(category.getName());
         Categories updatedCategory = categoriesRepository.save(existingCategory);
         return updatedCategory;
@@ -42,7 +45,7 @@ public class CategoryServices {
     }
 
     public List<Categories> findAllCategories() {
-        return categoriesRepository.findAll();
+        return categoriesRepository.getAll();
     }
 
     public Categories findCategoryById(Long id) {

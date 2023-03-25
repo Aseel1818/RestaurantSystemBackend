@@ -27,6 +27,11 @@ public class Orders implements Serializable {
     private Long tables;
 
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            joinColumns =@JoinColumn(name = "orders_id") ,
+            inverseJoinColumns = @JoinColumn(name = "order_details_id"),
+            name ="orders_order_detail"
+    )
     private List<OrderDetails> orderDetail;
 }

@@ -15,6 +15,5 @@ public class OrderPayload {
     @Nullable
     private Long tables;
 
-    @OneToMany
     private List<OrderDetailsPayload> orderDetail;
 }

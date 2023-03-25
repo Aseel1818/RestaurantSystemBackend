@@ -1,6 +1,7 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Categories;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
+import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.ItemsRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.CategoryServices;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -12,9 +13,12 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoriesResources {
     private final CategoryServices categoryServices;
+    private final ItemsRepository itemsRepository;
 
-    public CategoriesResources(CategoryServices categoryServices){
+    public CategoriesResources(CategoryServices categoryServices,
+                               ItemsRepository itemsRepository){
         this.categoryServices=categoryServices;
+        this.itemsRepository = itemsRepository;
     }
     @GetMapping()
     public ResponseEntity<List<Categories>> getAllCategories(){
@@ -22,11 +26,17 @@ public class CategoriesResources {
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/items")
-    public ResponseEntity<List<Items>> getItemsByCategoryId(@PathVariable("id") Long categoryId) {
+   /*@GetMapping("/{id}/items")
+   public ResponseEntity<List<Items>> getItemsByCategoryId(@PathVariable("id") Long categoryId) {
         List<Items> items = categoryServices.findItemsByCategoryId(categoryId);
         return new ResponseEntity<>(items, HttpStatus.OK);
-    }
+    }*/
+
+    /*@GetMapping("/items")
+    public ResponseEntity<List<Items>> getItemsByCategoryId(@PathVariable("id") Long categoryId) {
+        List<Items> items = itemsRepository.findItemsByCategory(categoryId);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }*/
 
     @GetMapping("/findCategory/{id}")
     public ResponseEntity<Categories> getCategoryById (@PathVariable("id") Long id){
@@ -43,7 +53,7 @@ public class CategoriesResources {
     @PutMapping("/updateCategory/{id}")
     public ResponseEntity<Categories> updateCategory(@PathVariable("id") Long id,
                                            @RequestBody Categories category){
-        category.setCategoryId(id);
+        category.setId(id);
         Categories updatedCategory = categoryServices.updateCategory(category);
         return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }

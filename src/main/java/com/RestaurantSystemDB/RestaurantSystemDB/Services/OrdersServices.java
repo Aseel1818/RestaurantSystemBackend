@@ -43,9 +43,7 @@ public class OrdersServices {
                 .note(orderPayload.getNote())
                 .orderDetail(orderDetails)
                 .build();
-        for (OrderDetails orderDetail : orderDetails) {
-            orderDetail.setOrder(newOrder);
-        }
+
         Orders savedOrder = ordersRepository.save(newOrder);
         return savedOrder;
     }
@@ -78,6 +76,9 @@ public class OrdersServices {
         Orders order = ordersRepository.findById(orderID)
                 .orElseThrow(() -> new OrderNotFoundException("DETAILS with this id " + orderID + " does not exist"));
         return order.getOrderDetail();
+    }
+    public List<Orders>getAll(){
+        return ordersRepository.getAll();
     }
 
 }
