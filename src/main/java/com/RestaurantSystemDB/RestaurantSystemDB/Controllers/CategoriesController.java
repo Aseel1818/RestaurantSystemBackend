@@ -1,4 +1,4 @@
-package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
+package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Categories;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.ItemsRepository;
@@ -11,12 +11,12 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/categories")
-public class CategoriesResources {
+public class CategoriesController {
     private final CategoryServices categoryServices;
     private final ItemsRepository itemsRepository;
 
-    public CategoriesResources(CategoryServices categoryServices,
-                               ItemsRepository itemsRepository){
+    public CategoriesController(CategoryServices categoryServices,
+                                ItemsRepository itemsRepository){
         this.categoryServices=categoryServices;
         this.itemsRepository = itemsRepository;
     }

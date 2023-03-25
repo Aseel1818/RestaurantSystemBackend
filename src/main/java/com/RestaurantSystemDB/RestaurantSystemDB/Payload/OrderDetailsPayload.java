@@ -1,4 +1,4 @@
-package com.RestaurantSystemDB.RestaurantSystemDB.payload;
+package com.RestaurantSystemDB.RestaurantSystemDB.Payload;
 
 
 import jakarta.annotation.Nullable;

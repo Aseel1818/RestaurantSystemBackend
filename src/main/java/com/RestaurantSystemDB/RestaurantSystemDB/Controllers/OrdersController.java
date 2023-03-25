@@ -1,12 +1,9 @@
-package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
+package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
 
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
-import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
-import com.RestaurantSystemDB.RestaurantSystemDB.Services.ItemsServices;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.OrdersServices;
-import com.RestaurantSystemDB.RestaurantSystemDB.Services.TablesServices;
-import com.RestaurantSystemDB.RestaurantSystemDB.payload.OrderPayload;
+import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderPayload;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,11 +14,11 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping()
-public class OrdersResources {
+public class OrdersController {
     @Autowired
     private final OrdersServices ordersServices;
 
-    public OrdersResources(OrdersServices ordersServices) {
+    public OrdersController(OrdersServices ordersServices) {
         this.ordersServices = ordersServices;
     }
 

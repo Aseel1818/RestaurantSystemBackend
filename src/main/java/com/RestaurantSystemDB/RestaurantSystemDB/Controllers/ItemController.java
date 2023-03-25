@@ -1,4 +1,4 @@
-package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
+package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
 
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.ItemsServices;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping()
-public class ItemResources {
+public class ItemController {
 
     private final ItemsServices itemsServices;
 
-    public ItemResources(ItemsServices itemsServices) {
+    public ItemController(ItemsServices itemsServices) {
         this.itemsServices = itemsServices;
     }
 

@@ -1,4 +1,4 @@
-package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
+package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.OrderDetailsServices;
 import jakarta.transaction.Transactional;
@@ -11,11 +11,11 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping()
-public class OrderDetailsResources {
+public class OrderDetailsController {
 
     private final OrderDetailsServices orderDetailsServices;
 
-    public OrderDetailsResources(OrderDetailsServices orderDetailsServices){
+    public OrderDetailsController(OrderDetailsServices orderDetailsServices){
         this.orderDetailsServices=orderDetailsServices;
     }
     @GetMapping("/OrderDetail")

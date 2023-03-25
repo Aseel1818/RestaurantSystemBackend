@@ -1,7 +1,6 @@
-package com.RestaurantSystemDB.RestaurantSystemDB.payload;
+package com.RestaurantSystemDB.RestaurantSystemDB.Payload;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;

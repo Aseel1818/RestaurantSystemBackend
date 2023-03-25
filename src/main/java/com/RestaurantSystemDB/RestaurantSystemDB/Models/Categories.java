@@ -21,6 +21,5 @@ public class Categories implements Serializable {
     private Long id;
     private String name;
 
-
 }
 

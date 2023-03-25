@@ -1,4 +1,4 @@
-package com.RestaurantSystemDB.RestaurantSystemDB.Resources;
+package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
 
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Tables;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.TablesServices;
@@ -13,11 +13,11 @@ import java.util.List;
 @RequestMapping()
 @CrossOrigin(origins = "*")
 
-public class TablesResources {
+public class TablesController {
 
     private final TablesServices tablesServices;
 
-    public TablesResources(TablesServices tablesServices) {
+    public TablesController(TablesServices tablesServices) {
         this.tablesServices = tablesServices;
     }
 

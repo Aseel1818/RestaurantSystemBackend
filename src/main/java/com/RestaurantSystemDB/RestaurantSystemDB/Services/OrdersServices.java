@@ -4,13 +4,13 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Exceptions.OrderNotFoundExcepti
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
-import com.RestaurantSystemDB.RestaurantSystemDB.payload.OrderPayload;
+import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.RestaurantSystemDB.RestaurantSystemDB.payload.OrderDetailsPayload;
+import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderDetailsPayload;
 
 @Service
 public class OrdersServices {

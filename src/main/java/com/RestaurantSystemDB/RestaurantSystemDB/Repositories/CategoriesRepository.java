@@ -1,6 +1,5 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Repositories;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Categories;
-import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
