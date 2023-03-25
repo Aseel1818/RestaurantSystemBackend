@@ -1,7 +1,5 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.payload;
 
-import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
-import com.RestaurantSystemDB.RestaurantSystemDB.Models.Tables;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;

@@ -1,7 +1,6 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Models;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 
 @Entity

@@ -27,18 +27,15 @@ public class OrdersServices {
     }
 
     public Orders addOrder(OrderPayload orderPayload) {
-        // create order details from order payload
         List<OrderDetails> orderDetails = new ArrayList<>();
         for (OrderDetailsPayload orderDetailPayload : orderPayload.getOrderDetail()) {
             OrderDetails orderDetail = OrderDetails.builder()
                     .item(itemsServices.findItemById(orderDetailPayload.getItemId()))
                     .quantity(orderDetailPayload.getQuantity())
-                    //.order(null)
                     .build();
             orderDetails.add(orderDetail);
         }
 
-        // create order from order payload and order details
         Orders newOrder = Orders.builder()
                 .id(orderPayload.getId())
                 .tables(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getID() : null)
@@ -49,8 +46,6 @@ public class OrdersServices {
         for (OrderDetails orderDetail : orderDetails) {
             orderDetail.setOrder(newOrder);
         }
-
-        // save order to database
         Orders savedOrder = ordersRepository.save(newOrder);
         return savedOrder;
     }
