@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,9 +27,10 @@ public class Items implements Serializable {
     private String imageUrl;
 
     private Float price;
-    @OneToOne(mappedBy = "item", fetch = FetchType.LAZY,
+    /*@OneToOne(mappedBy = "item", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    private OrderDetails orderDetails;
+    private OrderDetails orderDetails;*/
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Categories category;

@@ -38,7 +38,7 @@ public class OrdersServices {
 
         Orders newOrder = Orders.builder()
                 .id(orderPayload.getId())
-                .tables(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getID() : null)
+                .tables(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getId() : null)
                 .total(orderPayload.getTotal())
                 .note(orderPayload.getNote())
                 .orderDetail(orderDetails)
@@ -68,8 +68,6 @@ public class OrdersServices {
 
     public Orders findOrderById(Long id) {
         return ordersRepository.findOrderById(id).orElseThrow(() -> new OrderNotFoundException("Order with this id " + id + "does not exist"));
-
-
     }
 
     public List<OrderDetails> findDetailsByOrdersID(Long orderID) {
@@ -77,8 +75,4 @@ public class OrdersServices {
                 .orElseThrow(() -> new OrderNotFoundException("DETAILS with this id " + orderID + " does not exist"));
         return order.getOrderDetail();
     }
-    public List<Orders>getAll(){
-        return ordersRepository.getAll();
-    }
-
 }

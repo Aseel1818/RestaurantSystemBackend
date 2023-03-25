@@ -27,10 +27,8 @@ public class OrderDetails implements Serializable {
 
 
         @OneToOne(fetch = FetchType.LAZY, optional = true)
-        @JoinColumn(name = "item_id")
+        @JoinColumn(name = "item_id",referencedColumnName = "id")
         private Items item;
-
-
 
 }
 

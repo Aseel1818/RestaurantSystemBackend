@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface ItemsRepository extends JpaRepository<Items,Long> {
     void deleteItemById(Long id);
 
-    Optional<Items> findItemById(Long id);
+   // Optional<Items> findItemById(Long id);
+   @Query("SELECT i FROM Items i WHERE i.id = :id")
+   Optional<Items> findItemById(@Param("id") Long id);
 
    @Query("SELECT i FROM Items i WHERE i.category.id = :categoryId")
    List<Items> findItemsByCategoryId(@Param("categoryId") Long categoryId);

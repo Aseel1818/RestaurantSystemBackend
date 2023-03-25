@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping()
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 
 public class TablesResources {
 
@@ -43,7 +43,7 @@ public class TablesResources {
     
     @PutMapping("/updateTable/{id}")
     public ResponseEntity<Tables> updateTable(@PathVariable("id") Long id, @RequestBody Tables updatedTable) {
-        Boolean newStatus = !updatedTable.getStatus();
+        Boolean newStatus = !updatedTable.isStatus();
         updatedTable.setStatus(newStatus);
         updatedTable = tablesServices.updateTable(updatedTable);
         return new ResponseEntity<>(updatedTable, HttpStatus.OK);

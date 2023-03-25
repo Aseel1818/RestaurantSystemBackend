@@ -6,29 +6,20 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.ItemsServices;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.OrdersServices;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.TablesServices;
-import com.RestaurantSystemDB.RestaurantSystemDB.payload.OrderDetailsPayload;
 import com.RestaurantSystemDB.RestaurantSystemDB.payload.OrderPayload;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping()
 public class OrdersResources {
     @Autowired
     private final OrdersServices ordersServices;
-    @Autowired
-    private TablesServices tablesServices;
-    @Autowired
-    private ItemsServices itemsServices;
-    @Autowired
-    private OrdersRepository ordersRepository;
-
 
     public OrdersResources(OrdersServices ordersServices) {
         this.ordersServices = ordersServices;
@@ -51,7 +42,7 @@ public class OrdersResources {
     @PostMapping("/addOrder")
     public ResponseEntity<Orders> addOrder(@RequestBody OrderPayload order) {
         Orders savedOrder = ordersServices.addOrder(order);
-        return ResponseEntity.ok(savedOrder);
+        return new ResponseEntity<>(savedOrder,HttpStatus.OK);
     }
 
 
@@ -75,10 +66,6 @@ public class OrdersResources {
     public ResponseEntity<List<OrderDetails>> getDetailsByOrdersID(@PathVariable("id") Long orderID) {
         List<OrderDetails> orders = ordersServices.findDetailsByOrdersID(orderID);
         return new ResponseEntity<>(orders, HttpStatus.OK);
-    }
-    @GetMapping("/ord/")
-    public ResponseEntity<?>getAll(){
-        return ResponseEntity.ok(ordersServices.getAll());
     }
 
 }
