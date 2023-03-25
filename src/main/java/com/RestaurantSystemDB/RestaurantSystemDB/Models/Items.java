@@ -1,5 +1,6 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Items implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

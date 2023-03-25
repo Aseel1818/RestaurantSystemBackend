@@ -21,11 +21,9 @@ public class ItemResources {
     }
 
     @GetMapping("/items")
-    public ResponseEntity<List<Items>> getAllItems() {
-        List<Items> items = itemsServices.findAllItems();
-        return new ResponseEntity<>(items, HttpStatus.OK);
+    public ResponseEntity<?>getAll(){
+        return ResponseEntity.ok(itemsServices.getAll());
     }
-
     @GetMapping("/findItem/{id}")
     public ResponseEntity<Items> getItemById(@PathVariable("id") Long id) {
         Items item = itemsServices.findItemById(id);

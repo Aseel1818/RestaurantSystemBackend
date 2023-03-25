@@ -36,8 +36,8 @@ public class ItemsServices {
         itemsRepository.deleteItemById(id);
     }
 
-    public List<Items> findAllItems() {
-        return itemsRepository.findAll();
+    public List<Items> getAll() {
+        return itemsRepository.getAll();
     }
 
     public Items findItemById(Long id) {

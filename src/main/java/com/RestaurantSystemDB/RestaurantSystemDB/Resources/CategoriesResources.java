@@ -26,17 +26,12 @@ public class CategoriesResources {
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-   /*@GetMapping("/{id}/items")
-   public ResponseEntity<List<Items>> getItemsByCategoryId(@PathVariable("id") Long categoryId) {
-        List<Items> items = categoryServices.findItemsByCategoryId(categoryId);
-        return new ResponseEntity<>(items, HttpStatus.OK);
-    }*/
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<Items>> getItemsByCategoryId(@PathVariable("id") Long id) {
+        List<Items> items = itemsRepository.findItemsByCategoryId(id);
+        return ResponseEntity.ok(items);
+    }
 
-    /*@GetMapping("/items")
-    public ResponseEntity<List<Items>> getItemsByCategoryId(@PathVariable("id") Long categoryId) {
-        List<Items> items = itemsRepository.findItemsByCategory(categoryId);
-        return new ResponseEntity<>(items, HttpStatus.OK);
-    }*/
 
     @GetMapping("/findCategory/{id}")
     public ResponseEntity<Categories> getCategoryById (@PathVariable("id") Long id){

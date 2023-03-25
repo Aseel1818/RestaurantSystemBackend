@@ -1,5 +1,4 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Repositories;
-import com.RestaurantSystemDB.RestaurantSystemDB.Models.Categories;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,8 +13,8 @@ public interface ItemsRepository extends JpaRepository<Items,Long> {
 
     Optional<Items> findItemById(Long id);
 
-   /* @Query(nativeQuery = true, value = "SELECT * FROM items WHERE category_id = ?1")
- List<Items> findItemsByCategory(@Param("id") Long id);
-*/
-
+   @Query("SELECT i FROM Items i WHERE i.category.id = :categoryId")
+   List<Items> findItemsByCategoryId(@Param("categoryId") Long categoryId);
+   @Query(nativeQuery = true,value = "SELECT * FROM `items`")
+   List<Items> getAll();
 }

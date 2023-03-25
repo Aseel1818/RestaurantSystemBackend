@@ -14,10 +14,11 @@ import java.util.List;
 public class CategoryServices {
 
     private final CategoriesRepository categoriesRepository;
-
+    private final ItemsRepository itemsRepository;
     @Autowired
-    public CategoryServices(CategoriesRepository categoriesRepository) {
+    public CategoryServices(CategoriesRepository categoriesRepository, ItemsRepository itemsRepository) {
         this.categoriesRepository = categoriesRepository;
+        this.itemsRepository = itemsRepository;
     }
 
     public Categories addCategory(Categories category) {
@@ -25,13 +26,9 @@ public class CategoryServices {
 
     }
 
-//    public List<Items> findItemsByCategoryId(Long id) {
-//        Categories category = categoriesRepository.findById(id)
-//                .orElseThrow(() -> new CategoryNotFoundException("Category with this id " + id + " does not exist"));
-//        return category.getItems();
-//    }
-
-
+    public List<Items> findItemsByCategoryId(Long categoryId) {
+        return itemsRepository.findItemsByCategoryId(categoryId);
+    }
 
     public Categories updateCategory(Categories category) {
         Categories existingCategory = categoriesRepository.findById(category.getId()).get();
