@@ -47,35 +47,12 @@ public class OrdersResources {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-
     @PostMapping("/addOrder")
     public ResponseEntity<Orders> addOrder(@RequestBody OrderPayload order) {
-        List<OrderDetails> orderDetails = new ArrayList<>();
-        for (OrderDetailsPayload orderDetailPayload : order.getOrderDetail()) {
-            OrderDetails orderDetail = OrderDetails.builder()
-                    .item(itemsServices.findItemById(orderDetailPayload.getItemId()))
-                    .quantity(orderDetailPayload.getQuantity())
-                    .order(null) 
-                    .build();
-            orderDetails.add(orderDetail);
-        }
-
-        Orders newOrder = Orders.builder()
-                .id(order.getId())
-                .tables(order.getTables() != null ? tablesServices.findTableById(order.getTables()).getID() : null)
-                .total(order.getTotal())
-                .note(order.getNote())
-                .orderDetail(orderDetails)
-                .build();
-        for (OrderDetails orderDetail : orderDetails) {
-            orderDetail.setOrder(newOrder);
-        }
-
-        Orders savedOrder = ordersServices.addOrder(newOrder);
+        Orders savedOrder = ordersServices.addOrder(order);
         return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
     }
-
-
+    
 
     @PutMapping("/updateOrder/{id}")
     public ResponseEntity<Orders> updateOrder(@PathVariable("id") Long id,
