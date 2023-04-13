@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 public class RoleController {
 
-    @Autowired
     private RoleService roleService;
 
     @PostMapping({"/createNewRole"})

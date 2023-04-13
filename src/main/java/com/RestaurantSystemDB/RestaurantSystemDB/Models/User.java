@@ -16,6 +16,14 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
+
+    private Long userId;
+    private String username;
+    private String password;
+
     public User(String username, String password, Collection<GrantedAuthority> mapRolesToAuth) {
     }
 
@@ -26,14 +34,6 @@ public class User {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-
-    private Long userId;
-    private String username;
-    private String password;
 
 
     public String getUsername() {

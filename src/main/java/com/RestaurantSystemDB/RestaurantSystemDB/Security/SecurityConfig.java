@@ -20,7 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private UserDetailsService userDetailsService;
 
-    @Autowired
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }

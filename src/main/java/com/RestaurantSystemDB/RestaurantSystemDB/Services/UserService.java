@@ -30,6 +30,11 @@ public class UserService {
 
 
     }
+    public List<User> getUsers() {
+        log.info("Retreving All users ");
+        return userRepository.findAll();
+    }
+
 
     /*public void addRoleToUser(String userName, String roleName) {
         log.info("Adding role{} to user{} is done ", roleName, userName);
@@ -47,12 +52,8 @@ public class UserService {
         return userRepository.findUserByName(userName);
 
     }*/
-    public List<User> getUsers() {
-        log.info("Retreving All users ");
-        return userRepository.findAll();
-    }
 
-    public void InitializaUsersData() {
+    /*public void InitializaUsersData() {
         Role adminRole = new Role();
         adminRole.setRoleName("Admin");
         adminRole.setRoleDescription("This is an admin Page");
@@ -80,5 +81,5 @@ public class UserService {
         userRepository.save(user);
 
 
-    }
+    }*/
 }

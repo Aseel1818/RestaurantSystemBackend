@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
     private UserRepository userRepository;
 
-    @Autowired
     public UserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -31,7 +30,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userRepository
-                .findByUserName(username)
+                .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User name doesn't exist"));
 
         return (UserDetails) new User(user.getUsername(), user.getPassword(), mapRolesToAuth(user.getRole()));

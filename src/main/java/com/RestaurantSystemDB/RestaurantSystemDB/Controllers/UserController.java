@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping({"/api"})
 public class UserController {
-    @Autowired
     private UserService userService;
 
     @GetMapping({"/forAdmin"})
@@ -33,10 +31,10 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-    @PostConstruct
+    /*@PostConstruct
     public void initRoleAndUser() {
         userService.InitializaUsersData();
-    }
+    }*/
 
     @PostMapping({"/user/add"})
     public User registorNewUser(@RequestBody User user) {
