@@ -2,23 +2,37 @@ package com.RestaurantSystemDB.RestaurantSystemDB.Models;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@NoArgsConstructor
+@Data
+@AllArgsConstructor
 public class User {
-    @Id
-    private Integer userId;
-    private String username;
+    public User(String username, String password, Collection<GrantedAuthority> mapRolesToAuth) {
+    }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
+
+    private Long userId;
+    private String username;
     private String password;
 
 
@@ -48,7 +62,7 @@ public class User {
             }
     )
 
-    private Set<Role> role;
+    private Set<Role> role = new HashSet<>();
 
     public Set<Role> getRole() {
         return role;
