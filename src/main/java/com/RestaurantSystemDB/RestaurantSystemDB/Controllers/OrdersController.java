@@ -8,12 +8,16 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping()
+@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+@RequestMapping("/rest/order")
+
 public class OrdersController {
     @Autowired
     private final OrdersServices ordersServices;
@@ -24,6 +28,7 @@ public class OrdersController {
 
 
     @GetMapping("/orders")
+
     public ResponseEntity<List<Orders>> getAllOrders() {
         List<Orders> orders = ordersServices.findAllOrders();
         return new ResponseEntity<>(orders, HttpStatus.OK);
@@ -37,9 +42,10 @@ public class OrdersController {
 
 
     @PostMapping("/addOrder")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Orders> addOrder(@RequestBody OrderPayload order) {
         Orders savedOrder = ordersServices.addOrder(order);
-        return new ResponseEntity<>(savedOrder,HttpStatus.OK);
+        return new ResponseEntity<>(savedOrder, HttpStatus.OK);
     }
 
 
@@ -60,6 +66,7 @@ public class OrdersController {
     }
 
     @GetMapping("/{id}/details")
+
     public ResponseEntity<List<OrderDetails>> getDetailsByOrdersID(@PathVariable("id") Long orderID) {
         List<OrderDetails> orders = ordersServices.findDetailsByOrdersID(orderID);
         return new ResponseEntity<>(orders, HttpStatus.OK);

@@ -4,13 +4,16 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Services.OrderDetailsServices;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping()
+@RequestMapping("/rest/details")
+@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+
 public class OrderDetailsController {
 
     private final OrderDetailsServices orderDetailsServices;

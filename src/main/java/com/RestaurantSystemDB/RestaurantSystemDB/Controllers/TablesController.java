@@ -4,15 +4,16 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Models.Tables;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.TablesServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping()
+@RequestMapping("/rest/table")
 @CrossOrigin(origins = "*")
-
+@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 public class TablesController {
 
     private final TablesServices tablesServices;

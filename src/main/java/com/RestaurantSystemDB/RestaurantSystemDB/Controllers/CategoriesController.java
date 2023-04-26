@@ -6,11 +6,13 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Services.CategoryServices;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/categories")
+@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+@RequestMapping("/rest/category")
 public class CategoriesController {
     private final CategoryServices categoryServices;
     private final ItemsRepository itemsRepository;
