@@ -43,7 +43,8 @@ public class TablesController {
 
     
     @PutMapping("/updateTable/{id}")
-    public ResponseEntity<Tables> updateTable(@PathVariable("id") Long id, @RequestBody Tables updatedTable) {
+    public ResponseEntity<Tables> updateTable(@PathVariable("id") Long id
+            , @RequestBody Tables updatedTable) {
         Boolean newStatus = !updatedTable.isStatus();
         updatedTable.setStatus(newStatus);
         updatedTable = tablesServices.updateTable(updatedTable);
