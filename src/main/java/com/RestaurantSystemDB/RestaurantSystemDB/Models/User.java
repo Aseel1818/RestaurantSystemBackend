@@ -2,6 +2,8 @@ package com.RestaurantSystemDB.RestaurantSystemDB.Models;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,29 +14,43 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@NoArgsConstructor
 @Data
 @AllArgsConstructor
+@Table(name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+        })
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
-
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Size(max = 20)
     private String username;
+
+    @Size(max = 100)
     private String password;
 
-    public User(String username, String password, Collection<GrantedAuthority> mapRolesToAuth) {
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    public User() {
     }
 
-    public Long getUserId() {
-        return userId;
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public Long getId() {
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -44,6 +60,7 @@ public class User {
         this.username = username;
     }
 
+
     public String getPassword() {
         return password;
     }
@@ -52,23 +69,11 @@ public class User {
         this.password = password;
     }
 
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "USER_ROLE", joinColumns = {
-            @JoinColumn(name = "USER_ID")
-    },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "ROLE_ID")
-            }
-    )
-
-    private Set<Role> role = new HashSet<>();
-
-    public Set<Role> getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Set<Role> role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

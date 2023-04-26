@@ -2,28 +2,41 @@ package com.RestaurantSystemDB.RestaurantSystemDB.Models;
 
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "roles")
+
 public class Role {
-
     @Id
-    private String roleName;
-    private String roleDescription;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    public String getRoleName() {
-        return roleName;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ERole name;
+
+    public Role() {
+
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public Role(ERole name) {
+        this.name = name;
     }
 
-    public String getRoleDescription() {
-        return roleDescription;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRoleDescription(String roleDescription) {
-        this.roleDescription = roleDescription;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public ERole getName() {
+        return name;
+    }
+
+    public void setName(ERole name) {
+        this.name = name;
     }
 }
