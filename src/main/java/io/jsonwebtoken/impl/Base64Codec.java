@@ -1,4 +1,16 @@
-package com.RestaurantSystemDB.RestaurantSystemDB.jwt;
+package io.jsonwebtoken.impl;
 
-public class Base64Codec {
+import jakarta.xml.bind.DatatypeConverter;
+
+public class Base64Codec extends AbstractTextCodec {
+    public Base64Codec() {
+    }
+
+    public String encode(byte[] data) {
+        return DatatypeConverter.printBase64Binary(data);
+    }
+
+    public byte[] decode(String encoded) {
+        return DatatypeConverter.parseBase64Binary(encoded);
+    }
 }
