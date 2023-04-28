@@ -1,11 +1,13 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
 
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Tables;
+import com.RestaurantSystemDB.RestaurantSystemDB.Payload.UpdateTablesPayload;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.TablesServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,13 +42,18 @@ public class TablesController {
         return new ResponseEntity<>(newTable, HttpStatus.CREATED);
     }
 
-    
-    @PutMapping("/updateTable/{id}")
-    public ResponseEntity<Tables> updateTable(@PathVariable("id") Long id, @RequestBody Tables updatedTable) {
-        Boolean newStatus = !updatedTable.isStatus();
-        updatedTable.setStatus(newStatus);
-        updatedTable = tablesServices.updateTable(updatedTable);
-        return new ResponseEntity<>(updatedTable, HttpStatus.OK);
+
+    @PutMapping("/updateTable")
+    public ResponseEntity<List<Tables>> updateTable(@RequestBody UpdateTablesPayload tableIDs) {
+        List<Tables> result = new ArrayList<>();
+        for (int i = 0; i < tableIDs.getTableIDs().size(); i++) {
+            Long tableId = tableIDs.getTableIDs().get(i);
+            Tables table = tablesServices.findTableById(tableId);
+            table.setStatus(!table.isStatus());
+            Tables updatedTable = tablesServices.updateTable(table);
+            result.add(updatedTable);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
