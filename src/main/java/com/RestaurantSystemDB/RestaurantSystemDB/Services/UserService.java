@@ -24,14 +24,8 @@ public class UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public User registorNewUser(User user) {
-        log.info("user is saved to the db", user.getUsername());
-        return userRepository.save(user);
 
-
-    }
     public List<User> getUsers() {
-        log.info("Retreving All users ");
         return userRepository.findAll();
     }
 }
