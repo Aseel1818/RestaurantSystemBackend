@@ -1,23 +1,14 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
 
-import com.RestaurantSystemDB.RestaurantSystemDB.Models.ERole;
-import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
-import com.RestaurantSystemDB.RestaurantSystemDB.Models.Role;
-import com.RestaurantSystemDB.RestaurantSystemDB.Models.User;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Request.LoginRequest;
-import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Request.SignupRequest;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Response.JwtResponse;
-import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Response.MessageResponse;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.RoleRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.UserRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.UserDetailsImpl;
 import com.RestaurantSystemDB.RestaurantSystemDB.jwt.JwtUtils;
 import jakarta.validation.Valid;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,10 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
@@ -53,13 +41,13 @@ public class AuthController {
 
 
     @GetMapping("/vtoken")
-    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String bearerToken) {
+    public boolean validateToken(@RequestHeader("Authorization") String bearerToken) {
         String jwtToken = extractJwtFromBearerToken(bearerToken);
         boolean isValid = jwtUtils.validateJwtToken(jwtToken);
         if (isValid) {
-            return ResponseEntity.ok("Token is valid");
+            return true;
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is not valid");
+            return false;
         }
     }
 
