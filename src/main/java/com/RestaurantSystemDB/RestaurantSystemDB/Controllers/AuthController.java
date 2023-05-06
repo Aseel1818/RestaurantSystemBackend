@@ -51,7 +51,7 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @GetMapping("/vtoken")
-    public ResponseEntity<String> validateToken(@RequestParam("token") String token) {
+    public ResponseEntity<String> validateToken(String token) {
         boolean isValid = jwtUtils.validateJwtToken(token);
 
         if (isValid) {

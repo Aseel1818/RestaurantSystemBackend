@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 @Builder
 @Data
@@ -25,6 +26,9 @@ public class Orders implements Serializable {
     private Float total;
 
     private Long tables;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date payment_date;
+
 
 
     @ManyToMany(cascade = CascadeType.ALL)
