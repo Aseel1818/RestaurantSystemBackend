@@ -23,6 +23,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -50,16 +51,25 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @GetMapping("/vtoken")
-    public ResponseEntity<String> validateToken(String token) {
-        boolean isValid = jwtUtils.validateJwtToken(token);
 
+    @GetMapping("/vtoken")
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String bearerToken) {
+        String jwtToken = extractJwtFromBearerToken(bearerToken);
+        boolean isValid = jwtUtils.validateJwtToken(jwtToken);
         if (isValid) {
             return ResponseEntity.ok("Token is valid");
         } else {
-            return ResponseEntity.badRequest().body("Token is not valid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is not valid");
         }
     }
+
+    private String extractJwtFromBearerToken(String bearerToken) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
