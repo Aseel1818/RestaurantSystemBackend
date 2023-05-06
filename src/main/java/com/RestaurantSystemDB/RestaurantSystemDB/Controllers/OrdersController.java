@@ -15,9 +15,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 @RequestMapping("/rest/order")
-
 public class OrdersController {
     @Autowired
     private final OrdersServices ordersServices;
@@ -26,13 +24,13 @@ public class OrdersController {
         this.ordersServices = ordersServices;
     }
 
-
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @GetMapping("/orders")
-
     public ResponseEntity<List<Orders>> getAllOrders() {
         List<Orders> orders = ordersServices.findAllOrders();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 
     @GetMapping("/findOrder/{id}")
     public ResponseEntity<Orders> getOrderById(@PathVariable("id") Long id) {
@@ -40,31 +38,13 @@ public class OrdersController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-
-    @PostMapping("/addOrder")
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    @PostMapping("/addOrder")
     public ResponseEntity<Orders> addOrder(@RequestBody OrderPayload order) {
         Orders savedOrder = ordersServices.addOrder(order);
         return new ResponseEntity<>(savedOrder, HttpStatus.OK);
     }
-
-
-    @PutMapping("/updateOrder/{id}")
-    public ResponseEntity<Orders> updateOrder(@PathVariable("id") Long id,
-                                              @RequestBody Orders order) {
-        order.setId(id);
-        Orders updatedOrder = ordersServices.updateOrder(order);
-        return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
-    }
-
-
-    @DeleteMapping("/deleteOrder/{id}")
-    @Transactional
-    public ResponseEntity<?> deleteOrder(@PathVariable("id") Long id) {
-        ordersServices.deleteOrder(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}/details")
 
     public ResponseEntity<List<OrderDetails>> getDetailsByOrdersID(@PathVariable("id") Long orderID) {
