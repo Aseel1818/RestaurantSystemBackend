@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderDetailsPayload;
 
 @Service
@@ -42,14 +43,13 @@ public class OrdersServices {
                 .tables(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getId() : null)
                 .total(orderPayload.getTotal())
                 .note(orderPayload.getNote())
-                .payment_date(now)
+                .creation_date(now)
                 .orderDetail(orderDetails)
                 .build();
 
         Orders savedOrder = ordersRepository.save(newOrder);
         return savedOrder;
     }
-
 
 
     public Orders updateOrder(Orders order) {
