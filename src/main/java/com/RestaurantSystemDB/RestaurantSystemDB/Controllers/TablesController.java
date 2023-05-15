@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/rest/table")
 @CrossOrigin(origins = "*")
-@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 public class TablesController {
 
     private final TablesServices tablesServices;
@@ -24,17 +23,21 @@ public class TablesController {
         this.tablesServices = tablesServices;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @GetMapping("/tables")
     public ResponseEntity<List<Tables>> getAllTables() {
         List<Tables> tables = tablesServices.findAllTables();
         return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @GetMapping("/findTable/{id}")
     public ResponseEntity<Tables> getTableById(@PathVariable("id") Long id) {
         Tables table = tablesServices.findTableById(id);
         return new ResponseEntity<>(table, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
 
     @PostMapping("/addTable")
 
@@ -43,6 +46,7 @@ public class TablesController {
         return new ResponseEntity<>(newTable, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @PutMapping("/updateTable")
     public ResponseEntity<List<Tables>> updateTable(@RequestBody UpdateTablesPayload tableIDs) {
         List<Tables> result = new ArrayList<>();
@@ -56,6 +60,7 @@ public class TablesController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/deleteTable/{id}")
     public ResponseEntity<?> deleteTable(@PathVariable("id") Long id) {
         tablesServices.deleteTable(id);

@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderDetailsPayload;
 
 @Service
@@ -35,19 +37,19 @@ public class OrdersServices {
                     .build();
             orderDetails.add(orderDetail);
         }
-
+        Date now = new Date(); // add this line to get the current date and time
         Orders newOrder = Orders.builder()
                 .id(orderPayload.getId())
                 .tables(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getId() : null)
                 .total(orderPayload.getTotal())
                 .note(orderPayload.getNote())
+                .creation_date(now)
                 .orderDetail(orderDetails)
                 .build();
 
         Orders savedOrder = ordersRepository.save(newOrder);
         return savedOrder;
     }
-
 
 
     public Orders updateOrder(Orders order) {
