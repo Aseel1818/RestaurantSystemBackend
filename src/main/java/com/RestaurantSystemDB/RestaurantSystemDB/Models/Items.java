@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Items implements Serializable {
+public class Items extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
@@ -26,7 +26,6 @@ public class Items implements Serializable {
     private String imageUrl;
 
     private Float price;
-    private Boolean is_deleted = false;
 
     /*@OneToOne(mappedBy = "item", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)

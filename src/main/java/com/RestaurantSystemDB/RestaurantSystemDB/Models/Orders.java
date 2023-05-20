@@ -1,21 +1,18 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
-@Builder
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class Orders implements Serializable {
+public class Orders extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
@@ -27,9 +24,6 @@ public class Orders implements Serializable {
     private Float total;
 
     private Long tables;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creation_date;
-    private Date update_date;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -38,4 +32,20 @@ public class Orders implements Serializable {
             name = "orders_order_detail"
     )
     private List<OrderDetails> orderDetail;
+
+    @Builder
+    public Orders(Long id, String note, Float total, Long tables, List<OrderDetails> orderDetail, Boolean isDeleted, LocalDateTime creationDate, LocalDateTime updateDate, LocalDateTime deleteDate) {
+        this.id = id;
+        this.note = note;
+        this.total = total;
+        this.tables = tables;
+        this.orderDetail = orderDetail;
+        this.creationDate = Timestamp.valueOf(creationDate.atOffset(ZoneOffset.UTC).toLocalDateTime());
+        this.isDeleted = isDeleted;
+        this.deleteDate = deleteDate == null ? null : Timestamp.valueOf(deleteDate.atOffset(ZoneOffset.UTC).toLocalDateTime());
+        this.updateDate = updateDate == null ? null : Timestamp.valueOf(updateDate.atOffset(ZoneOffset.UTC).toLocalDateTime());
+    }
+
+    public Orders() {
+    }
 }

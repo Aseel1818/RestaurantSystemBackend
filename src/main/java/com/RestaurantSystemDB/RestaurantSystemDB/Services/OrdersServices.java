@@ -3,16 +3,15 @@ package com.RestaurantSystemDB.RestaurantSystemDB.Services;
 import com.RestaurantSystemDB.RestaurantSystemDB.Exceptions.OrderNotFoundException;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
-import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
+import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderDetailsPayload;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderPayload;
+import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderDetailsPayload;
 
 @Service
 public class OrdersServices {
@@ -37,16 +36,16 @@ public class OrdersServices {
                     .build();
             orderDetails.add(orderDetail);
         }
-        Date now = new Date(); // add this line to get the current date and time
+        LocalDateTime now = LocalDateTime.now();
         Orders newOrder = Orders.builder()
                 .id(orderPayload.getId())
                 .tables(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getId() : null)
                 .total(orderPayload.getTotal())
                 .note(orderPayload.getNote())
-                .creation_date(now)
                 .orderDetail(orderDetails)
+                .isDeleted(false)
+                .creationDate(now)
                 .build();
-
         Orders savedOrder = ordersRepository.save(newOrder);
         return savedOrder;
     }
