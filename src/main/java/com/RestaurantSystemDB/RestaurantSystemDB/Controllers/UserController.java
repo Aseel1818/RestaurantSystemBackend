@@ -7,13 +7,12 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Request.SignupRequest;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Response.MessageResponse;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.RoleRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.UserRepository;
+import com.RestaurantSystemDB.RestaurantSystemDB.Services.AuditLogService;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.UserService;
 import com.RestaurantSystemDB.RestaurantSystemDB.jwt.JwtUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +26,9 @@ import java.util.Set;
 @RequestMapping("/api/users")
 
 public class UserController {
+
+    private final AuditLogService auditLogService;
+    private final UserRepository yourEntityRepository;
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -45,6 +47,11 @@ public class UserController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    public UserController(AuditLogService auditLogService, UserRepository yourEntityRepository) {
+        this.auditLogService = auditLogService;
+        this.yourEntityRepository = yourEntityRepository;
+    }
 
     @GetMapping("/all")
     public String allAccess() {
@@ -88,6 +95,7 @@ public class UserController {
         }
 
         user.setRoles(roles);
+        auditLogService.createAuditLog(user.getId(), "your_entity", "create");
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
