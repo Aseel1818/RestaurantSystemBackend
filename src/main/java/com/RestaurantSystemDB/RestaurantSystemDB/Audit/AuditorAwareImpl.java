@@ -1,14 +1,18 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Audit;
 
-import org.springframework.data.domain.AuditorAware;
+import jakarta.persistence.Table;
 
-import java.util.Optional;
-public class AuditorAwareImpl implements AuditorAware<String> {
+import java.lang.annotation.Annotation;
 
-    @Override
-    public Optional<String> getCurrentAuditor() {
-        return Optional.of("Ramesh");
 
+public class AuditorAwareImpl  {
+    public static String getTableName(Class<?> entityClass) {
+        Annotation annotation = entityClass.getAnnotation(Table.class);
+        if (annotation instanceof Table) {
+            Table tableAnnotation = (Table) annotation;
+            return tableAnnotation.name();
+        }
+        return null;
     }
 
 

@@ -1,5 +1,7 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
 
+import com.RestaurantSystemDB.RestaurantSystemDB.Audit.AuditLog;
+import com.RestaurantSystemDB.RestaurantSystemDB.Audit.AuditorAwareImpl;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.ERole;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Role;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.User;
@@ -10,6 +12,7 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.UserRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.AuditLogService;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.UserService;
 import com.RestaurantSystemDB.RestaurantSystemDB.jwt.JwtUtils;
+import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -95,7 +98,8 @@ public class UserController {
         }
 
         user.setRoles(roles);
-        auditLogService.createAuditLog(user.getId(), "your_entity", "create");
+        String tableName = AuditorAwareImpl.getTableName(User.class);
+        auditLogService.createAuditLog(user.getId(), tableName, "create");
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
