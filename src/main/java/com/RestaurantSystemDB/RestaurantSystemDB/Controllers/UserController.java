@@ -7,9 +7,11 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Request.SignupRequest;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Response.MessageResponse;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.RoleRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.UserRepository;
+import com.RestaurantSystemDB.RestaurantSystemDB.Services.UserService;
 import com.RestaurantSystemDB.RestaurantSystemDB.jwt.JwtUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,6 +37,10 @@ public class UserController {
     RoleRepository roleRepository;
 
     @Autowired
+    private UserService userService;
+
+
+    @Autowired
     PasswordEncoder encoder;
 
     @Autowired
@@ -45,7 +51,7 @@ public class UserController {
         return "Public Content.";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/adduser")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -83,9 +89,15 @@ public class UserController {
 
         user.setRoles(roles);
         userRepository.save(user);
-
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+    /*@GetMapping("/get/{userId}")
+    public ResponseEntity<User> getUserByUserId(@PathVariable(value = "userId") int userId) {
+        return new ResponseEntity<>(userService.getUserByUserId(userId).get(), HttpStatus.OK);
+    }*/
+
+
+
 
 
 }
