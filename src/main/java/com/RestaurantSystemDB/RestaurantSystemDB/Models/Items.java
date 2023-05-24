@@ -26,6 +26,8 @@ public class Items implements Serializable {
     private String imageUrl;
 
     private Float price;
+    private Boolean is_deleted = false;
+
     /*@OneToOne(mappedBy = "item", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private OrderDetails orderDetails;*/

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderDetailsPayload;
 
 @Service
@@ -29,7 +30,7 @@ public class OrdersServices {
 
     public Orders addOrder(OrderPayload orderPayload) {
         List<OrderDetails> orderDetails = new ArrayList<>();
-        for (OrderDetailsPayload orderDetailPayload : orderPayload.getOrderDetail()) {
+        for (OrderDetailsPayload orderDetailPayload : orderPayload.getOrderDetails()) {
             OrderDetails orderDetail = OrderDetails.builder()
                     .item(itemsServices.findItemById(orderDetailPayload.getItemId()))
                     .quantity(orderDetailPayload.getQuantity())
@@ -42,14 +43,13 @@ public class OrdersServices {
                 .tables(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getId() : null)
                 .total(orderPayload.getTotal())
                 .note(orderPayload.getNote())
-                .payment_date(now)
-                .orderDetail(orderDetails)
+                .creation_date(now)
+                .orderDetails(orderDetails)
                 .build();
 
         Orders savedOrder = ordersRepository.save(newOrder);
         return savedOrder;
     }
-
 
 
     public Orders updateOrder(Orders order) {
@@ -75,6 +75,6 @@ public class OrdersServices {
     public List<OrderDetails> findDetailsByOrdersID(Long orderID) {
         Orders order = ordersRepository.findById(orderID)
                 .orElseThrow(() -> new OrderNotFoundException("DETAILS with this id " + orderID + " does not exist"));
-        return order.getOrderDetail();
+        return order.getOrderDetails();
     }
 }

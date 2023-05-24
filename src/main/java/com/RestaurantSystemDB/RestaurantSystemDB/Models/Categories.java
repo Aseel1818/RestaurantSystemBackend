@@ -20,6 +20,8 @@ public class Categories implements Serializable {
 
     private Long id;
     private String name;
+    private Boolean is_deleted = false;
+
 
 }
 
