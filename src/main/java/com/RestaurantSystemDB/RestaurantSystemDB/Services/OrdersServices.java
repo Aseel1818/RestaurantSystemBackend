@@ -7,6 +7,8 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderDetailsPayload;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderPayload;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,6 +30,8 @@ public class OrdersServices {
     }
 
     public Orders addOrder(OrderPayload orderPayload) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
         List<OrderDetails> orderDetails = new ArrayList<>();
         for (OrderDetailsPayload orderDetailPayload : orderPayload.getOrderDetail()) {
             OrderDetails orderDetail = OrderDetails.builder()
@@ -39,6 +43,7 @@ public class OrdersServices {
         LocalDateTime now = LocalDateTime.now();
         Orders newOrder = Orders.builder()
                 .id(orderPayload.getId())
+                .userName(username)
                 .tables(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getId() : null)
                 .total(orderPayload.getTotal())
                 .note(orderPayload.getNote())
