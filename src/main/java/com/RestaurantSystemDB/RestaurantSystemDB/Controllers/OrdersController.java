@@ -50,5 +50,13 @@ public class OrdersController {
         List<OrderDetails> orders = ordersServices.findDetailsByOrdersID(orderID);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/updateOrder/{id}")
+    public ResponseEntity<Orders> updateOrder(@PathVariable("id") Long id,
+                                              @RequestBody Orders order) {
+        order.setId(id);
+        Orders updatedOrder = ordersServices.updateOrder(order);
+        return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+    }
 
 }
