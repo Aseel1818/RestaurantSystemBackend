@@ -23,8 +23,6 @@ public class Orders extends BaseEntity implements Serializable {
 
     private Float total;
 
-    private Long tableID;
-
     private String userName;
 
 
@@ -46,11 +44,10 @@ public class Orders extends BaseEntity implements Serializable {
     private Tables table;
 
     @Builder
-    public Orders(Long id, String note, Float total, Long tableID, List<OrderDetails> orderDetail, Boolean isDeleted, LocalDateTime creationDate, LocalDateTime updateDate, LocalDateTime deleteDate,String userName,Tables table,User user) {
+    public Orders(Long id, String note, Float total,List<OrderDetails> orderDetail, Boolean isDeleted, LocalDateTime creationDate, LocalDateTime updateDate, LocalDateTime deleteDate,String userName,Tables table,User user) {
         this.id = id;
         this.note = note;
         this.total = total;
-        this.tableID = tableID;
         this.userName=userName;
         this.orderDetail = orderDetail;
         this.user=user;

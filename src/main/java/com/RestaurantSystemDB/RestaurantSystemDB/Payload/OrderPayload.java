@@ -21,7 +21,4 @@ public class OrderPayload {
     private Date update_Date;
     private Date created_Date;
     private List<OrderDetailsPayload> orderDetail;
-    private User user;
-    private Tables table;
-
 }
