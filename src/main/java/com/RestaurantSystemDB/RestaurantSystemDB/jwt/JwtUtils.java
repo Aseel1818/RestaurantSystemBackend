@@ -59,11 +59,5 @@ public class JwtUtils {
 
         return false;
     }
-    public String extractJwtTokenFromAuthentication(Authentication authentication) {
-        String bearerToken = authentication.getCredentials().toString();
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
+
 }

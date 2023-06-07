@@ -1,9 +1,12 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
+import com.RestaurantSystemDB.RestaurantSystemDB.Audit.AuditorAwareImpl;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Categories;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Items;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.ItemsRepository;
+import com.RestaurantSystemDB.RestaurantSystemDB.Services.AuditLogService;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.CategoryServices;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +17,11 @@ import java.util.List;
 @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 @RequestMapping("/rest/category")
 public class CategoriesController {
+    @Autowired
+    private AuditLogService auditLogService;
+
+    @Autowired
+    private AuditorAwareImpl auditorAware;
     private final CategoryServices categoryServices;
     private final ItemsRepository itemsRepository;
 
@@ -52,6 +60,7 @@ public class CategoriesController {
                                            @RequestBody Categories category){
         category.setId(id);
         Categories updatedCategory = categoryServices.updateCategory(category);
+
         return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }
 

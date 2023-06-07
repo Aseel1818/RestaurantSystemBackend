@@ -6,13 +6,13 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Models.Role;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.User;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Request.SignupRequest;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Response.MessageResponse;
+import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.ItemsRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.RoleRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.UserRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.AuditLogService;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.UserDetailsImpl;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.UserService;
 import com.RestaurantSystemDB.RestaurantSystemDB.jwt.JwtUtils;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -46,7 +45,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
+    @Autowired
+    private ItemsRepository itemsRepository ;
     @Autowired
     PasswordEncoder encoder;
 
@@ -68,7 +68,7 @@ public class UserController {
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/adduser")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest, HttpServletRequest request,
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest,
                                           @RequestHeader (name="Authorization") String token) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
@@ -104,7 +104,6 @@ public class UserController {
         }
 
         user.setRoles(roles);
-//        String token = extractTokenFromRequest(request);
 
         String token2 = token.split(" ")[1];
         if (token2.length() == 0) {
@@ -115,9 +114,6 @@ public class UserController {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
         System.out.println(userPrincipal.getId());
         Long userId = userPrincipal.getId();
-//        if (userId == null) {
-//            return ResponseEntity.badRequest().body(new MessageResponse("Error: Failed to retrieve user ID from token."));
-//        }
 
         String tableName = AuditorAwareImpl.getTableName(User.class);
         auditLogService.createAuditLog( tableName, "create", userId);
