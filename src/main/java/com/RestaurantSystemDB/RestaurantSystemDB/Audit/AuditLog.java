@@ -18,7 +18,6 @@ public class AuditLog {
     private Long id;
 
     @Column(name = "user_id")
-    @CreatedBy
     private Long userId;
 
     @Column(name = "table_name")

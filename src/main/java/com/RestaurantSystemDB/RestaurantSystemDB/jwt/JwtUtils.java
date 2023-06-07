@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import io.jsonwebtoken.*;
+import org.springframework.util.StringUtils;
 
 @Component
 public class JwtUtils {
@@ -35,6 +36,8 @@ public class JwtUtils {
     }
 
     public String getUserNameFromJwtToken(String token) {
+        System.out.println("token");
+        System.out.println(token);
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
@@ -55,5 +58,12 @@ public class JwtUtils {
         }
 
         return false;
+    }
+    public String extractJwtTokenFromAuthentication(Authentication authentication) {
+        String bearerToken = authentication.getCredentials().toString();
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }

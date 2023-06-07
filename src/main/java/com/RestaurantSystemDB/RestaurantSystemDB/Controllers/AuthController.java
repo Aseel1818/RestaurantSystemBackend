@@ -1,5 +1,4 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
-
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Request.LoginRequest;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Response.JwtResponse;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.RoleRepository;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
@@ -78,6 +76,4 @@ public class AuthController {
                 userDetails.getUsername(),
                 roles));
     }
-
-
 }

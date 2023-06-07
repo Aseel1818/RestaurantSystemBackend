@@ -1,6 +1,5 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
 
-import com.RestaurantSystemDB.RestaurantSystemDB.Audit.AuditLog;
 import com.RestaurantSystemDB.RestaurantSystemDB.Audit.AuditorAwareImpl;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.ERole;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Role;
@@ -10,14 +9,18 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Response.MessageRespons
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.RoleRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.UserRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.AuditLogService;
+import com.RestaurantSystemDB.RestaurantSystemDB.Services.UserDetailsImpl;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.UserService;
 import com.RestaurantSystemDB.RestaurantSystemDB.jwt.JwtUtils;
-import jakarta.persistence.Table;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -29,12 +32,11 @@ import java.util.Set;
 @RequestMapping("/api/users")
 
 public class UserController {
-
-    private final AuditLogService auditLogService;
     private final UserRepository yourEntityRepository;
     @Autowired
     AuthenticationManager authenticationManager;
-
+    @Autowired
+    private AuditLogService auditLogService;
     @Autowired
     UserRepository userRepository;
 
@@ -51,9 +53,12 @@ public class UserController {
     @Autowired
     JwtUtils jwtUtils;
 
-    public UserController(AuditLogService auditLogService, UserRepository yourEntityRepository) {
+    private final AuditorAwareImpl auditorAware;
+
+    public UserController(AuditLogService auditLogService, UserRepository yourEntityRepository, JwtUtils jwtUtils) {
         this.auditLogService = auditLogService;
         this.yourEntityRepository = yourEntityRepository;
+        this.auditorAware = new AuditorAwareImpl(jwtUtils, userRepository);
     }
 
     @GetMapping("/all")
@@ -63,7 +68,8 @@ public class UserController {
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/adduser")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest, HttpServletRequest request,
+                                          @RequestHeader (name="Authorization") String token) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -98,18 +104,25 @@ public class UserController {
         }
 
         user.setRoles(roles);
+//        String token = extractTokenFromRequest(request);
+
+        String token2 = token.split(" ")[1];
+        if (token2.length() == 0) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Invalid token."));
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        System.out.println(userPrincipal.getId());
+        Long userId = userPrincipal.getId();
+//        if (userId == null) {
+//            return ResponseEntity.badRequest().body(new MessageResponse("Error: Failed to retrieve user ID from token."));
+//        }
+
         String tableName = AuditorAwareImpl.getTableName(User.class);
-        auditLogService.createAuditLog(user.getId(), tableName, "create");
+        auditLogService.createAuditLog( tableName, "create", userId);
+
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
-    /*@GetMapping("/get/{userId}")
-    public ResponseEntity<User> getUserByUserId(@PathVariable(value = "userId") int userId) {
-        return new ResponseEntity<>(userService.getUserByUserId(userId).get(), HttpStatus.OK);
-    }*/
-
-
-
-
-
 }
