@@ -21,9 +21,6 @@ public class Tables extends BaseEntity implements Serializable {
     private boolean status;
     private String name;
 
-
-
-
     public Tables(boolean status, String name) {
         this.status = status;
         this.name = name;
