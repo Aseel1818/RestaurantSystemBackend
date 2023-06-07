@@ -3,15 +3,19 @@ package com.RestaurantSystemDB.RestaurantSystemDB.Services;
 import com.RestaurantSystemDB.RestaurantSystemDB.Exceptions.OrderNotFoundException;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
-import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
+import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderDetailsPayload;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderPayload;
+import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderDetailsPayload;
+import java.util.stream.Collectors;
 
 @Service
 public class OrdersServices {
@@ -26,8 +30,10 @@ public class OrdersServices {
     public OrdersServices(OrdersRepository ordersRepository) {
         this.ordersRepository = ordersRepository;
     }
-
     public Orders addOrder(OrderPayload orderPayload) {
+        Authentication authentication = null;
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
         List<OrderDetails> orderDetails = new ArrayList<>();
         for (OrderDetailsPayload orderDetailPayload : orderPayload.getOrderDetail()) {
             OrderDetails orderDetail = OrderDetails.builder()
@@ -36,38 +42,28 @@ public class OrdersServices {
                     .build();
             orderDetails.add(orderDetail);
         }
-        Date now = new Date(); // add this line to get the current date and time
+        LocalDateTime now = LocalDateTime.now();
         Orders newOrder = Orders.builder()
                 .id(orderPayload.getId())
-                .tables(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getId() : null)
+                .userName(username)
+                .user(orderPayload.getUser())
+                .table(orderPayload.getTable())
+              //  .tableID(orderPayload.getTableID() != null ? tablesServices.findTableById(orderPayload.getTableID()).getId() : null)
                 .total(orderPayload.getTotal())
                 .note(orderPayload.getNote())
-                .payment_date(now)
                 .orderDetail(orderDetails)
+                .isDeleted(false)
+                .creationDate(now)
                 .build();
-
         Orders savedOrder = ordersRepository.save(newOrder);
         return savedOrder;
     }
 
-
-
-    public Orders updateOrder(Orders order) {
-        Orders existingOrder = ordersRepository.findById(order.getId()).get();
-        existingOrder.setNote(order.getNote());
-        existingOrder.setTotal(order.getTotal());
-        Orders updatedOrder = ordersRepository.save(existingOrder);
-        return updatedOrder;
-    }
-
-    public void deleteOrder(Long id) {
-        ordersRepository.deleteOrderById(id);
-    }
-
     public List<Orders> findAllOrders() {
-        return ordersRepository.findAll();
+        return ordersRepository.findAll().stream()
+                .filter(order -> !order.getIsDeleted())
+                .collect(Collectors.toList());
     }
-
     public Orders findOrderById(Long id) {
         return ordersRepository.findOrderById(id).orElseThrow(() -> new OrderNotFoundException("Order with this id " + id + "does not exist"));
     }

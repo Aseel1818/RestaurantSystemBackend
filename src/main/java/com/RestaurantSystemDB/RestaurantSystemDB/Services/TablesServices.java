@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TablesServices {
@@ -31,9 +32,10 @@ public class TablesServices {
     }
 
     public List<Tables> findAllTables() {
-        return tablesRepository.findAll();
+        return tablesRepository.findAll().stream()
+                .filter(table -> !table.getIsDeleted())
+                .collect(Collectors.toList());
     }
-
     public Tables findTableById(Long id) {
         return tablesRepository.findTableById(id).orElseThrow(() -> new TableNotFoundException("Table with this id " + id + "does not exist"));
     }

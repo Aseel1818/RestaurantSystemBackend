@@ -4,7 +4,6 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.OrdersServices;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderPayload;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

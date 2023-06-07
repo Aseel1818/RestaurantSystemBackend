@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tables implements Serializable {
+public class Tables extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,6 +20,8 @@ public class Tables implements Serializable {
     private Long id;
     private boolean status;
     private String name;
+
+
 
 
     public Tables(boolean status, String name) {

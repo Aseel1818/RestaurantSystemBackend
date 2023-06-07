@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServices {
@@ -23,11 +24,6 @@ public class CategoryServices {
 
     public Categories addCategory(Categories category) {
         return categoriesRepository.save(category);
-
-    }
-
-    public List<Items> findItemsByCategoryId(Long categoryId) {
-        return itemsRepository.findItemsByCategoryId(categoryId);
     }
 
     public Categories updateCategory(Categories category) {
@@ -42,9 +38,10 @@ public class CategoryServices {
     }
 
     public List<Categories> findAllCategories() {
-        return categoriesRepository.getAll();
+        return categoriesRepository.getAll().stream()
+                .filter(category -> !category.getIsDeleted())
+                .collect(Collectors.toList());
     }
-
     public Categories findCategoryById(Long id) {
         return categoriesRepository.findCategoryById(id).orElseThrow(() -> new CategoryNotFoundException("Category with this id " + id + "does not exist"));
     }
