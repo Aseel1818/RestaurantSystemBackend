@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrdersServices {
@@ -44,7 +45,8 @@ public class OrdersServices {
         Orders newOrder = Orders.builder()
                 .id(orderPayload.getId())
                 .userName(username)
-                .tables(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getId() : null)
+                //.table(tablesServices.findTableById(orderPayload.getTable().getId()))
+                .tableID(orderPayload.getTables() != null ? tablesServices.findTableById(orderPayload.getTables()).getId() : null)
                 .total(orderPayload.getTotal())
                 .note(orderPayload.getNote())
                 .orderDetail(orderDetails)
@@ -69,7 +71,9 @@ public class OrdersServices {
     }
 
     public List<Orders> findAllOrders() {
-        return ordersRepository.findAll();
+        return ordersRepository.findAll().stream()
+                .filter(order -> !order.getIsDeleted())
+                .collect(Collectors.toList());
     }
 
     public Orders findOrderById(Long id) {
