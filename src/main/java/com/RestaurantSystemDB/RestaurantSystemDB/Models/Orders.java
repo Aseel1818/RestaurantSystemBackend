@@ -17,13 +17,10 @@ public class Orders extends BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
 
-
     private Long id;
     private String note;
 
     private Float total;
-
-    private Long tables;
 
     private String userName;
 
@@ -44,12 +41,11 @@ public class Orders extends BaseEntity implements Serializable {
     private List<OrderDetails> orderDetail;
 
     @Builder
-    public Orders(Long id, String note, Float total, Long tableID,
+    public Orders(Long id, String note, Float total,
                   List<OrderDetails> orderDetail, Boolean isDeleted, LocalDateTime creationDate,
                   LocalDateTime updateDate, LocalDateTime deleteDate,String userName,Tables table,User user) {        this.id = id;
         this.note = note;
         this.total = total;
-        this.tables = tables;
         this.orderDetail = orderDetail;
         this.creationDate = Timestamp.valueOf(creationDate.atOffset(ZoneOffset.UTC).toLocalDateTime());
         this.isDeleted = isDeleted;

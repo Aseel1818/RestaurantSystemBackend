@@ -37,6 +37,10 @@ public class TablesServices {
                 .collect(Collectors.toList());
     }
     public Tables findTableById(Long id) {
-        return tablesRepository.findTableById(id).orElseThrow(() -> new TableNotFoundException("Table with this id " + id + "does not exist"));
+        if (id == null) {
+            return null;
+        }
+        return tablesRepository.findTableById(id)
+                .orElseThrow(() -> new TableNotFoundException("Table with this id " + id + " does not exist"));
     }
 }

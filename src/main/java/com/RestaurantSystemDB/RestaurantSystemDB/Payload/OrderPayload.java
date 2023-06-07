@@ -16,7 +16,7 @@ public class OrderPayload {
 
     private Float total;
     @Nullable
-    private Long tables;
+    private Long tableID;
     private Date payment_Date;
     private Date update_Date;
     private Date created_Date;
