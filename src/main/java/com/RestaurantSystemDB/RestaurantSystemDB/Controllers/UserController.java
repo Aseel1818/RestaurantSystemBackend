@@ -1,18 +1,24 @@
 package com.RestaurantSystemDB.RestaurantSystemDB.Controllers;
 
+import com.RestaurantSystemDB.RestaurantSystemDB.Audit.AuditorAwareImpl;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.ERole;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Role;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.User;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Request.SignupRequest;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.Response.MessageResponse;
+import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.ItemsRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.RoleRepository;
 import com.RestaurantSystemDB.RestaurantSystemDB.Repositories.UserRepository;
+import com.RestaurantSystemDB.RestaurantSystemDB.Services.AuditLogService;
+import com.RestaurantSystemDB.RestaurantSystemDB.Services.UserDetailsImpl;
+import com.RestaurantSystemDB.RestaurantSystemDB.Services.UserService;
 import com.RestaurantSystemDB.RestaurantSystemDB.jwt.JwtUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +31,11 @@ import java.util.Set;
 @RequestMapping("/api/users")
 
 public class UserController {
+    private final UserRepository yourEntityRepository;
     @Autowired
     AuthenticationManager authenticationManager;
-
+    @Autowired
+    private AuditLogService auditLogService;
     @Autowired
     UserRepository userRepository;
 
@@ -35,19 +43,33 @@ public class UserController {
     RoleRepository roleRepository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ItemsRepository itemsRepository ;
+    @Autowired
     PasswordEncoder encoder;
 
     @Autowired
     JwtUtils jwtUtils;
+
+    private final AuditorAwareImpl auditorAware;
+
+    public UserController(AuditLogService auditLogService, UserRepository yourEntityRepository, JwtUtils jwtUtils) {
+        this.auditLogService = auditLogService;
+        this.yourEntityRepository = yourEntityRepository;
+        this.auditorAware = new AuditorAwareImpl(jwtUtils, userRepository);
+    }
 
     @GetMapping("/all")
     public String allAccess() {
         return "Public Content.";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/adduser")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest,
+                                          @RequestHeader (name="Authorization") String token) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -82,10 +104,21 @@ public class UserController {
         }
 
         user.setRoles(roles);
-        userRepository.save(user);
 
+        String token2 = token.split(" ")[1];
+        if (token2.length() == 0) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Invalid token."));
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        System.out.println(userPrincipal.getId());
+        Long userId = userPrincipal.getId();
+
+        String tableName = AuditorAwareImpl.getTableName(User.class);
+        auditLogService.createAuditLog( tableName, "create", userId);
+
+        userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
-
-
 }

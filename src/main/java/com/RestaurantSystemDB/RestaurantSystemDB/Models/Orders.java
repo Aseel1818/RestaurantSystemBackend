@@ -24,6 +24,9 @@ public class Orders extends BaseEntity implements Serializable {
 
     private String userName;
 
+    @Column(name = "user_id")
+    private Long userId;
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
@@ -43,7 +46,7 @@ public class Orders extends BaseEntity implements Serializable {
     @Builder
     public Orders(Long id, String note, Float total,
                   List<OrderDetails> orderDetail, Boolean isDeleted, LocalDateTime creationDate,
-                  LocalDateTime updateDate, LocalDateTime deleteDate,String userName,Tables table,User user) {        this.id = id;
+                  LocalDateTime updateDate, LocalDateTime deleteDate,String userName,Tables table,Long userId) {        this.id = id;
         this.note = note;
         this.total = total;
         this.orderDetail = orderDetail;
@@ -52,7 +55,7 @@ public class Orders extends BaseEntity implements Serializable {
         this.deleteDate = deleteDate == null ? null : Timestamp.valueOf(deleteDate.atOffset(ZoneOffset.UTC).toLocalDateTime());
         this.updateDate = updateDate == null ? null : Timestamp.valueOf(updateDate.atOffset(ZoneOffset.UTC).toLocalDateTime());
         this.userName=userName;
-        this.user=user;
+        this.userId=userId;
         this.table=table;
     }
 

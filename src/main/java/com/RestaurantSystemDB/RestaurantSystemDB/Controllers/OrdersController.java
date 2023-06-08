@@ -39,8 +39,9 @@ public class OrdersController {
 
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @PostMapping("/addOrder")
-    public ResponseEntity<Orders> addOrder(@RequestBody OrderPayload order) {
-        Orders savedOrder = ordersServices.addOrder(order);
+    public ResponseEntity<Orders> addOrder(@RequestBody OrderPayload order,
+                                           @RequestHeader(name = "Authorization") String token) {
+        Orders savedOrder = ordersServices.addOrder(order,token);
         return new ResponseEntity<>(savedOrder, HttpStatus.OK);
     }
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")

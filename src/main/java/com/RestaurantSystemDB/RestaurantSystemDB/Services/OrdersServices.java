@@ -30,7 +30,7 @@ public class OrdersServices {
         this.ordersRepository = ordersRepository;
     }
 
-    public Orders addOrder(OrderPayload orderPayload) {
+    public Orders addOrder(OrderPayload orderPayload,String token) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         List<OrderDetails> orderDetails = new ArrayList<>();
@@ -41,6 +41,8 @@ public class OrdersServices {
                     .build();
             orderDetails.add(orderDetail);
         }
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userPrincipal.getId();
         LocalDateTime now = LocalDateTime.now();
         Orders newOrder = Orders.builder()
                 .id(orderPayload.getId())
@@ -51,6 +53,7 @@ public class OrdersServices {
                 .orderDetail(orderDetails)
                 .isDeleted(false)
                 .creationDate(now)
+                .userId(userId)
                 .build();
         Orders savedOrder = ordersRepository.save(newOrder);
         return savedOrder;
