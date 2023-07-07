@@ -4,7 +4,6 @@ import com.RestaurantSystemDB.RestaurantSystemDB.Models.OrderDetails;
 import com.RestaurantSystemDB.RestaurantSystemDB.Models.Orders;
 import com.RestaurantSystemDB.RestaurantSystemDB.Services.OrdersServices;
 import com.RestaurantSystemDB.RestaurantSystemDB.Payload.OrderPayload;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +49,14 @@ public class OrdersController {
     public ResponseEntity<List<OrderDetails>> getDetailsByOrdersID(@PathVariable("id") Long orderID) {
         List<OrderDetails> orders = ordersServices.findDetailsByOrdersID(orderID);
         return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/updateOrder/{id}")
+    public ResponseEntity<Orders> updateOrder(@PathVariable("id") Long id,
+                                              @RequestBody Orders order) {
+        order.setId(id);
+        Orders updatedOrder = ordersServices.updateOrder(order);
+        return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
     }
 
 }

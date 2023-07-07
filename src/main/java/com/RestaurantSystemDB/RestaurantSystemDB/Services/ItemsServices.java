@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemsServices {
@@ -37,9 +38,10 @@ public class ItemsServices {
     }
 
     public List<Items> getAll() {
-        return itemsRepository.getAll();
+        return itemsRepository.getAll().stream()
+                .filter(item -> !item.getIsDeleted())
+                .collect(Collectors.toList());
     }
-
     public Items findItemById(Long id) {
         return itemsRepository.findItemById(id).orElseThrow(() -> new ItemNotFoundException("Item with this id " + id + "does not exist"));
     }
